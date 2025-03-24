@@ -1164,6 +1164,7 @@ def STDashboard(request):
 
         # Get the current time (timezone-aware)
         current_time = datetime.now(IST)
+        print(f'cccccccccccccccccccccccccccccccccccccccccccccccccurent TIMEEEEEEEEEEEEEEEEEEEEE {current_time}')
 
         # Filter vivas to get only ongoing ones
         ongoing_vivas = []
