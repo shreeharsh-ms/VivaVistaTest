@@ -1183,6 +1183,7 @@ def STDashboard(request):
             first_viva = None
 
         # Render the template with classroom and ongoing viva data
+        print(f'ONGOING VIVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA {ongoing_vivas}')
         return render(request, 'STDashboard.html', {
             "classroom": updated_classroom,
             "vivas": ongoing_vivas,
