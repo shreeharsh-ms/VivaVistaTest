@@ -108,7 +108,7 @@ from django.http import JsonResponse
 def store_json_in_mongodb(request, json_data, collection_name="Question_Generated", db_name="Viva_Viva_Online_db"):
     from datetime import datetime
     try:
-        client = pymongo.MongoClient("mongodb://localhost:27017/")
+        client = pymongo.MongoClient("mongodb+srv://shree:shree%401234@cluster0.fhplq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
         db = client[db_name]
         collection = db[collection_name]
         classroom_code = request.session.get('classroom_code')
@@ -154,7 +154,7 @@ def fetch_questions_from_mongodb(request, collection_name="Question_Generated", 
     print("*****************Fetch Func Called*****************88")
     try:
         # Establish MongoDB connection
-        client = pymongo.MongoClient("mongodb://localhost:27017/")
+        client = pymongo.MongoClient("mongodb+srv://shree:shree%401234@cluster0.fhplq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
         db = client[db_name]
         collection = db[collection_name]
         classroom_code = request.session.get('ongoing_viva_classroom_code')
@@ -525,7 +525,7 @@ def process_transcript(request):
                 transcript = 'null'
 
             # MongoDB setup
-            client = MongoClient("mongodb://localhost:27017/")  # Replace with your MongoDB URI
+            client = MongoClient("mongodb+srv://shree:shree%401234@cluster0.fhplq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")  # Replace with your MongoDB URI
             db = client["Viva_Viva_Online_db"]  # Replace with your database name
             transcripts_collection = db["transcripts"]  # Replace with your collection name
 
@@ -2107,7 +2107,7 @@ def store_transcripts_to_mongo(request):
                 return JsonResponse({'error': 'Viva session ID is missing from session.'}, status=400)
 
             # MongoDB setup
-            client = MongoClient("mongodb://localhost:27017/")
+            client = MongoClient("mongodb+srv://shree:shree%401234@cluster0.fhplq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
             db = client["Viva_Viva_Online_db"]
             conducted_viva_collection = db["transcripts"]
             consolidated_viva_collection = db["consolidated_viva"]
