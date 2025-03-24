@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Options</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background-color: #191919;
+            padding: 20px;
+        }
+
+        /* Container Styling */
+        .signup-container {
+            width: 95%;
+            height: 400px;
+            text-align: center;
+            max-width: 1200px;
+            box-sizing: border-box;
+            margin-top: 50px;
+        }
+
+        .signup-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 40px;
+            background: linear-gradient(to right, #6b8cff, #6be1ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Cards Layout */
+        .signup-cards {
+            display: flex;
+            justify-content: space-between;
+            gap: 4%;
+        }
+
+        /* Individual Card Styling */
+        .card {
+            width: 48%;
+            background: linear-gradient(145deg, #ffffff, #f0f4f8);
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+            height: 500px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: centers;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(107, 140, 255, 0.2), rgba(107, 225, 255, 0));
+            z-index: 0;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover:before {
+            transform: translate(50%, 50%);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .card-logo {
+            width: 290px;
+            height: 290px;
+            margin-bottom: 20px;
+            object-fit: contain;
+
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .signup-cards {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .card {
+                width: 100%;
+            }
+        }
+
+        .super-back {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .benifit-text {
+            width: 100%;
+            height: auto;
+            max-height: 20%;
+            display: flex;
+        }
+
+        .Heading {
+            font-size: 2rem;
+            font-family: 'Times New Roman', Times, serif;
+            /* color: rgb(7, 96, 174); */
+            font-weight: 800;
+            background-image: linear-gradient(90deg, rgb(220, 191, 250) 35%, rgb(255, 57, 222) 40%);
+            /* Define your gradient colors */
+            -webkit-background-clip: text;
+            /* Clip the background to the text */
+            background-clip: text;
+            color: transparent;
+            margin-top: -10px;
+            overflow: visible !important;
+
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        const video = document.getElementById('background-video');
+        video.playbackRate = 5; 
+    </script>
+    <video autoplay loop muted playsinline class="super-back" id="background-video">
+        <source src="{%static 'loop.mp4'%}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="signup-container">
+        <div class="benifit-text">
+            <p class="Heading"
+                style="margin: 0; font-size: 2.5rem; width: 100%; text-align: center; margin-top: -20px;">Welcome Back</p>
+        </div>
+        <div class="signup-cards" style="margin-top: 40px;">
+            <div class="card" onclick="window.location.href='/accounts/login'">
+                <div class="card-content">
+                    <img src="{%static  'imgs/student-logo.jpg' %}" alt="Student Logo" class="card-logo">
+                    <h2 class="card-title">Sign in as Student</h2>
+                    <p class="card-text">Gain access to exclusive learning materials, resources, and opportunities as a
+                        student.</p>
+                </div>
+            </div>
+            <div class="card" onclick="window.location.href='/hosts_login'">
+                <div class="card-content">
+                    <img src="{%static  'imgs/host-logo.jpg' %}" alt="Host Logo" class="card-logo">
+                    <h2 class="card-title">Sign in as Host</h2>
+                    <p class="card-text">Share your expertise and connect with a global community of learners.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+
+</html>

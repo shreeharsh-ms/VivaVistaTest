@@ -1,0 +1,70 @@
+body {
+    font-family: 'Alatsi', sans-serif;
+    margin: 0;
+    overflow: hidden;
+    background: black;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.title {
+    font-size: 10vw;
+    color: white;
+}
+
+canvas {
+    width: 100%;
+}
+
+input[type="text"],
+select,
+input[type="password"] {
+    width: 100%;
+    padding: 10px 10px;
+    font-size: 1em;
+    color: #333;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #9D50BB;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+select:focus,
+input[type="password"]:focus {
+    border-bottom-color: #6E48AA;
+}
+
+select {
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+select option {
+    color: #333;
+    font-size: 1em;
+}
+
+label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 1em;
+    color: #999;
+    pointer-events: none;
+    transition: all 0.3s;
+}
+
+/* Same styles for label focus/valid */

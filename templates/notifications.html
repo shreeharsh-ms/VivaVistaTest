@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <style>
+        /* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #f1f3f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Main Layout */
+.main-container {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    height: 90vh;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 25%;
+    background-color: #2d2d48;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-title {
+    color: white;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.category-list {
+    list-style-type: none;
+}
+
+.category-item {
+    padding: 15px;
+    color: #d1d1e5;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-align: left;
+}
+
+.category-item:hover,
+.category-item.active {
+    background-color: #404060;
+    border-radius: 8px;
+    color: white;
+}
+
+/* Content Area Styles */
+.content {
+    width: 75%;
+    padding: 40px;
+    overflow-y: auto;
+    background: #fafafa;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #ececec;
+    margin-bottom: 20px;
+}
+
+.clear-btn {
+    background-color: #ff6b6b;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.clear-btn:hover {
+    background-color: #ff5252;
+}
+
+/* Notification Styles */
+.notification-list {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.notification-item {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    transition: background 0.3s;
+    cursor: pointer;
+}
+
+.notification-item:hover {
+    background-color: #f0f0f5;
+}
+
+.notification-content {
+    flex-grow: 1;
+    margin-right: 20px;
+}
+
+.notification-title {
+    font-size: 1.2em;
+    color: #2d2d48;
+    margin-bottom: 10px;
+}
+
+.notification-body {
+    font-size: 1em;
+    color: #6c6c8c;
+}
+
+.notification-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.notification-timestamp {
+    font-size: 0.9em;
+    color: #9a9ab3;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    width: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #666;
+}
+
+.reply-section {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+#reply-input {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#send-reply-btn {
+    background-color: #6E48AA;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#send-reply-btn:hover {
+    background-color: #9D50BB;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #d1d1e5;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f1f3f6;
+}
+    </style>
+</head>
+
+<body>
+    <script>document.addEventListener("DOMContentLoaded", () => {
+            const notificationList = document.getElementById("notification-list");
+            const clearBtn = document.getElementById("clear-notifications");
+            const modal = document.getElementById("modal");
+            const closeModal = document.getElementById("close-modal");
+            const modalTitle = document.getElementById("modal-title");
+            const modalBody = document.getElementById("modal-body");
+            const replyInput = document.getElementById("reply-input");
+            const sendReplyBtn = document.getElementById("send-reply-btn");
+
+            // Example notifications
+            const notifications = [
+                { id: 1, category: "Assignments", title: "New Assignment Posted", message: "Assignment 4 on Data Science is due in 2 days. Please make sure to submit before the deadline.", timestamp: "10 mins ago" },
+                { id: 2, category: "Viva", title: "Viva Scheduled", message: "Your viva has been scheduled for Friday at 10 AM. Prepare accordingly.", timestamp: "1 hour ago" },
+                { id: 3, category: "Requests", title: "Meeting Request", message: "Professor John has requested a meeting on Wednesday. Please confirm your availability.", timestamp: "2 hours ago" },
+                { id: 4, category: "Miscellaneous", title: "System Update", message: "The system will undergo maintenance tonight from 12 AM to 3 AM.", timestamp: "Yesterday" },
+            ];
+
+            let currentNotifications = [...notifications];
+
+            // Function to display notifications
+            function displayNotifications() {
+                notificationList.innerHTML = ""; // Clear previous list
+
+                currentNotifications.forEach((notification) => {
+                    const notificationItem = document.createElement("div");
+                    notificationItem.classList.add("notification-item");
+
+                    notificationItem.innerHTML = `
+                    <div class="notification-content">
+                        <h4 class="notification-title">${notification.title}</h4>
+                        <p class="notification-body">${notification.message.substring(0, 60)}...</p>
+                        <div class="notification-footer">
+                            <span class="notification-timestamp">${notification.timestamp}</span>
+                        </div>
+                    </div>
+                `;
+
+                    notificationItem.addEventListener("click", () => {
+                        openModal(notification.title, notification.message);
+                    });
+
+                    notificationList.appendChild(notificationItem);
+                });
+            }
+
+            // Function to open modal with full notification details
+            function openModal(title, message) {
+                modalTitle.textContent = title;
+                modalBody.textContent = message;
+                modal.style.display = "flex";
+            }
+
+            // Close modal
+            closeModal.addEventListener("click", () => {
+                modal.style.display = "none";
+                replyInput.value = ""; // Clear reply input
+            });
+
+            // Handle reply
+            sendReplyBtn.addEventListener("click", () => {
+                const reply = replyInput.value;
+                if (reply) {
+                    alert(`Reply sent: ${reply}`);
+                    modal.style.display = "none";
+                    replyInput.value = ""; // Clear reply input
+                }
+            });
+
+            // Clear notifications
+            clearBtn.addEventListener("click", () => {
+                currentNotifications = [];
+                displayNotifications();
+            });
+
+            // Initial display of notifications
+            displayNotifications();
+        });
+    </script>
+    <div class="main-container">
+        <!-- Sidebar for categories -->
+        <nav class="sidebar">
+            <h2 class="sidebar-title">Notifications</h2>
+            <ul class="category-list">
+                <li class="category-item active">All Notifications</li>
+                <li class="category-item">Assignments</li>
+                <li class="category-item">Viva</li>
+                <li class="category-item">Resubmissions</li>
+                <li class="category-item">Requests</li>
+                <li class="category-item">Miscellaneous</li>
+            </ul>
+        </nav>
+
+        <!-- Main content area -->
+        <div class="content">
+            <div class="header">
+                <h2>New Notifications</h2>
+                <button class="clear-btn" id="clear-notifications">Clear All</button>
+            </div>
+
+            <div class="notification-list" id="notification-list">
+                <!-- Notifications will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for expanded notification -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">&times;</span>
+            <h3 id="modal-title"></h3>
+            <p id="modal-body"></p>
+            <div class="reply-section">
+                <input type="text" id="reply-input" placeholder="Type your reply...">
+                <button id="send-reply-btn">Send</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>

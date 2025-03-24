@@ -1,0 +1,1145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <div class="viva-scheduler">
+        <div class="viva-schedule-container">
+            <button class="btner profile-btn" onclick="vivaOpen(0)"><i class='bx bx-arrow-back'></i></button>
+            <div class="viva-schedule-header">
+                <h2>Schedule Viva Examination</h2>
+            </div>
+            <div class="kagazi-fool">
+                <form class="viva-schedule-form" id="vivaScheduleForm" method="POST" action="{% url 'schedule_viva' %}">
+                    {% csrf_token %}
+                    <div class="inline-fields">
+                        <div class="form-group">
+                            <label for="vivaDate">Viva Date</label>
+                            <input type="date" id="vivaDate" name="vivaDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="vivaTime">Viva Time</label>
+                            <input type="time" id="vivaTime" name="vivaTime" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subjectName">Subject Name</label>
+                        <input type="text" id="subjectName" name="subjectName" placeholder="Enter subject name"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numQuestions">Number of Questions</label>
+                        <input type="number" id="numQuestions" name="numQuestions"
+                            placeholder="Enter number of questions" min="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="questionSource">Select Question Source</label>
+                        <select id="questionSource" name="questionSource" required onchange="checkQuestionSource()">
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="question-bank">Question Bank</option>
+                            <option value="generate">Generate Questions</option>
+                        </select>
+                    </div>
+                    <script>
+                        // Modified by Ram
+                        function submitFormData() {
+                            // Collect form field data
+                            const vivaDate = document.getElementById("vivaDate").value;
+                            const vivaTime = document.getElementById("vivaTime").value;
+                            const subjectName = document.getElementById("subjectName").value;
+                            const numQuestions = document.getElementById("numQuestions").value;
+                            const questionSource = document.getElementById("questionSource").value;
+
+                            // Validate fields
+                            if (!vivaDate || !vivaTime || !subjectName || !numQuestions || !questionSource) {
+                                alert("Please fill in all the required fields.");
+                                return;
+                            }
+
+                            // Prepare the data object
+                            const formData = {
+                                vivaDate: vivaDate,
+                                vivaTime: vivaTime,
+                                subjectName: subjectName,
+                                numQuestions: parseInt(numQuestions),
+                                questionSource: questionSource,
+                                csrfmiddlewaretoken: document.querySelector('[name=csrfmiddlewaretoken]').value // Include CSRF token
+                            };
+
+                            // Define the route URL (update this to your Django view)
+                            const routeUrl = "/schedule_viva/";
+
+                            // Send data using fetch
+                            fetch(routeUrl, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRFToken": formData.csrfmiddlewaretoken
+                                },
+                                body: JSON.stringify(formData)
+                            })
+                                .then(response => {
+                                    if (response.ok) {
+                                        return response.json();
+                                    } else {
+                                        throw new Error("Error submitting data");
+                                    }
+                                })
+                                .then(data => {
+                                    alert("Viva details submitted successfully!");
+                                    console.log("Response from server:", data);
+
+                                    // Redirect to the route specified in the server response
+                                    if (data.redirect_url) {
+                                        window.location.href = data.redirect_url; // Redirect to the specified URL
+                                    } else {
+                                        console.error("No redirect URL provided in the response.");
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("Error:", error);
+                                    alert("There was a problem submitting the viva details.");
+                                });
+                        }
+                        //Modified by Ram End
+                        function checkQuestionSource() {
+                            const questionSource = document.getElementById('questionSource').value;
+                            if (questionSource === 'generate') {
+                                document.querySelector('.side-flow').style.display = 'block'
+                                document.querySelector('.aside-flow').style.display = 'none'
+                            }
+                            else if (questionSource === 'question-bank') {
+                                document.querySelector('.side-flow').style.display = 'none'
+                                document.querySelector('.aside-flow').style.display = 'block'
+
+
+                            }
+                        }
+                    </script>
+
+
+                    <!-- Generate Questions Section -->
+                    <div id="generateSection" class="hidden section-divider">
+                        <div class="form-group">
+                            <label for="generateOption">Generate Questions From</label>
+                            <select id="generateOption" name="generateOption">
+                                <option value="" disabled selected>Select an option</option>
+                                <option value="upload-pdf">Upload PDF</option>
+                                <option value="literature">Choose from Literature</option>
+                            </select>
+                        </div>
+
+                        <div id="uploadSection" class="hidden form-group">
+                            <label for="pdfUpload" class="file-upload-label">
+                                <input type="file" id="pdfUpload" name="pdfUpload" accept=".pdf" style="display:none;">
+                                <span id="uploadText">Click to Upload PDF</span>
+                            </label>
+                        </div>
+
+                        <div id="generateBtnSection" class="hidden form-group">
+                            <button type="button" class="btn" onclick="generateQuestions()">Generate Questions</button>
+                        </div>
+
+                        <div id="questionsDisplaySection" class="hidden questions-display">
+                            <label>Generated Questions</label>
+                            <ul id="questionsList" class="questions-list"></ul>
+                            <button type="button" class="btn" onclick="downloadQuestions()">Download Questions</button>
+                        </div>
+                    </div>
+
+                </form>
+                <div class="side-flow">
+                    <label>Upload PDF</label>
+                    <div class="uploader">
+                        <input type="file" name="pdfFile" id="pdfFile" accept=".pdf" required>
+                    </div>
+                    <button 
+                    type="button" 
+                    class="gen-que" 
+                    id="generate-questions-btn" 
+                    onclick="uploadPdf()" 
+                    style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer;"
+                >
+                    Generate Questions
+                </button>
+                <!-- <script>
+                    function uploadPdf() {
+                        const fileInput = document.getElementById('pdfFile');
+                        const generatedQuestionsDiv = document.getElementById('generated-questions');
+                        const button = document.getElementById('generate-questions-btn');
+                
+                        if (!fileInput.files.length) {
+                            alert("Please select a PDF file.");
+                            return;
+                        }
+                
+                        // Change button color to indicate it's clicked
+                        button.style.backgroundColor = "#FF5722"; // Change to your desired color
+                        button.style.color = "white";
+                        button.textContent = "Processing...";
+                
+                        const formData = new FormData();
+                        formData.append('pdfFile', fileInput.files[0]);
+                
+                        fetch("{% url 'upload_pdf' %}", {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}', // Add the CSRF token
+                            },
+                            body: formData
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    console.log("Questions:", data.questions); // Debug: log the received structure
+                
+                                    // Reset button text and color after processing
+                                    button.style.backgroundColor = "#4CAF50"; // Original color
+                                    button.textContent = "Generate Questions";
+                
+                                    // Clear the generated questions div
+                                    generatedQuestionsDiv.innerHTML = '';
+                
+                                    // Iterate through categories and their questions
+                                    for (const [category, questions] of Object.entries(data.questions)) {
+                                        // Create a header for the category
+                                        const categoryHeader = document.createElement('h3');
+                                        categoryHeader.textContent = category;
+                                        generatedQuestionsDiv.appendChild(categoryHeader);
+                
+                                        // Add each question under the category
+                                        questions.forEach((question, index) => {
+                                            const questionWrapper = document.createElement('div');
+                                            questionWrapper.style.marginBottom = "10px"; // Add spacing between questions
+                
+                                            const questionElement = document.createElement('p');
+                                            questionElement.textContent = `${index + 1}. ${question}`;
+                                            questionElement.style.margin = "0"; // Reset any default margins
+                                            questionElement.style.fontSize = "14px"; // Set font size to 10px or adjusted value
+                
+                                            const separator = document.createElement('hr');
+                                            separator.style.marginTop = "5px";
+                                            separator.style.marginBottom = "10px";
+                
+                                            // Append the question and separator
+                                            questionWrapper.appendChild(questionElement);
+                                            questionWrapper.appendChild(separator);
+                
+                                            generatedQuestionsDiv.appendChild(questionWrapper);
+                                        });
+                                    }
+                                } else {
+                                    alert("Error: " + data.error);
+                                    // Reset button color in case of error
+                                    button.style.backgroundColor = "#F44336"; // Error color
+                                    button.textContent = "Try Again";
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error uploading PDF:", error);
+                                alert("An error occurred while uploading the file.");
+                
+                                // Reset button color in case of error
+                                button.style.backgroundColor = "#F44336"; // Error color
+                                button.textContent = "Try Again";
+                            });
+                    }
+                </script> -->
+                <script>
+                    function uploadPdf() {
+    const fileInput = document.getElementById('pdfFile');
+    const generatedQuestionsDiv = document.getElementById('generated-questions');
+    const loader = document.getElementById('loader');
+    const button = document.getElementById('generate-questions-btn');
+
+    if (!fileInput.files.length) {
+        alert("Please select a PDF file.");
+        return;
+    }
+
+    // Show the loader and disable the button
+    loader.style.display = "block";
+    button.style.backgroundColor = "#FF5722"; // Change to your desired color
+    button.style.color = "white";
+    button.textContent = "Processing...";
+    button.disabled = true;
+
+    const formData = new FormData();
+    formData.append('pdfFile', fileInput.files[0]);
+
+    fetch("{% url 'upload_pdf' %}", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}', // Add the CSRF token
+        },
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Questions:", data.questions);
+
+                // Hide the loader
+                loader.style.display = "none";
+
+                // Reset button text and state
+                button.style.backgroundColor = "#4CAF50"; // Original color
+                button.textContent = "Generate Questions";
+                button.disabled = false;
+
+                // Clear the generated questions div
+                generatedQuestionsDiv.innerHTML = '';
+
+                // Iterate through categories and their questions
+                for (const [category, questions] of Object.entries(data.questions)) {
+                    const categoryHeader = document.createElement('h3');
+                    categoryHeader.textContent = category;
+                    generatedQuestionsDiv.appendChild(categoryHeader);
+
+                    questions.forEach((question, index) => {
+                        const questionWrapper = document.createElement('div');
+                        questionWrapper.style.marginBottom = "10px";
+
+                        const questionElement = document.createElement('p');
+                        questionElement.textContent = `${index + 1}. ${question}`;
+                        questionElement.style.margin = "0";
+                        questionElement.style.fontSize = "14px";
+
+                        const separator = document.createElement('hr');
+                        separator.style.marginTop = "5px";
+                        separator.style.marginBottom = "10px";
+
+                        questionWrapper.appendChild(questionElement);
+                        questionWrapper.appendChild(separator);
+                        generatedQuestionsDiv.appendChild(questionWrapper);
+                    });
+                }
+            } else {
+                alert("Error: " + data.error);
+
+                // Hide the loader and reset button on error
+                loader.style.display = "none";
+                button.style.backgroundColor = "#F44336"; // Error color
+                button.textContent = "Try Again";
+                button.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error("Error uploading PDF:", error);
+            alert("An error occurred while uploading the file.");
+
+            // Hide the loader and reset button on error
+            loader.style.display = "none";
+            button.style.backgroundColor = "#F44336"; // Error color
+            button.textContent = "Try Again";
+            button.disabled = false;
+        });
+}
+
+                </script>
+                
+
+
+                    <div id="generated-questions" class="generated-questions" style="overflow: scroll;">
+                        <!-- Questions will be displayed here -->
+                    </div>
+                    <div class="que-options">
+                        <button class="gen-que" onclick="viewQuestions()">View Questions</button>
+                        <button class="gen-que">
+                            <a id="dynamicDownloadLink" class="gen-que" href="javascript:void(0)"
+                                onclick="prepareDownload()">Download</a>
+                        </button>
+                        <button type="button" onclick="submitFormData()" class="gen-que">Confirm</button>
+
+                    </div>
+                    <style>
+                        .gen-que{
+                            transition: 0.5s ease;
+                        }
+                        .gen-que:hover{
+                            transition: 0.5s ease;
+                            background-color: #4CAF50;
+                            cursor: pointer;
+
+                        }
+                    </style>
+                    <script>
+                        function prepareDownload() {
+                            // Get the user_id and subjectName dynamically
+                            const userId = "{{ user_id|default:'' }}"; // If user_id is not available, it'll be an empty string
+                            const subjectNameInput = document.getElementById('subjectName');
+                            const subjectName = subjectNameInput.value.trim();
+
+                            if (!subjectName) {
+                                alert("Please enter the subject name before downloading.");
+                                return;
+                            }
+
+                            // Construct the URL for download
+                            const downloadUrl = `{% url 'download_csv' 'REPLACE_USER_ID' 'REPLACE_SUBJECT_NAME' %}`
+                                .replace('REPLACE_USER_ID', userId || 'unUserID')
+                                .replace('REPLACE_SUBJECT_NAME', encodeURIComponent(subjectName));
+
+                            // Redirect to the dynamically generated URL
+                            window.location.href = downloadUrl;
+                        }
+                    </script>
+                    <script>
+                        function viewQuestions() {
+                            window.location.href = "/questions"; // Replace with your Django URL mapping
+                        }
+                    </script>
+                </div>
+                <div class="aside-flow">
+                    <label>Question Bank</label>
+                    <div class="search-bar">
+                        <input type="text" id="searchQuestions" placeholder="Search questions..."
+                            oninput="searchQuestions()">
+                        <button type="button" onclick="clearSearch()">Clear</button>
+                    </div>
+                    <div id="generated-questions" class="generated-questions extre" style="overflow: scroll; position: relative;">
+                        <!-- Loader -->
+                        <div id="loader" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <div class="spinner" style="border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite;"></div>
+                        </div>
+                    
+                        <div class="question-bank-banks">
+                            <div class="question-slider-bar">
+                                <div class="logo-block"></div>
+                                <div class="name-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <style>
+                        /* Keyframes for spinner animation */
+                        @keyframes spin {
+                            0% { transform: rotate(0deg); }
+                            100% { transform: rotate(360deg); }
+                        }
+                    </style>
+                    
+                    <div class="">
+
+                    </div>
+                    <div class="que-options">
+                        <button class="gen-que" onclick="viewQuestions()">View Questions</button>
+                        <button class="gen-que">
+                            <a id="dynamicDownloadLink" class="gen-que" href="javascript:void(0)"
+                                onclick="prepareDownload()">Download</a>
+                        </button>
+                        <button class="gen-que">Confirm</button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="teacher-info">
+                <img src="https://th.bing.com/th?id=OIP.pcgkAsUemMPw5wXVO4Au3wHaJ3&w=216&h=288&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
+                    alt="Teacher Image" class="teacher-img">
+                <div class="namePlate">
+                    <h2 class="teacher-name">John Doe</h2>
+                    <p class="teacher-degree">Ph.D. in Artificial Intelligence</p>
+                </div>
+            </div>
+            <ul class="menu">
+                <li><i class='bx bx-calendar-exclamation'></i> Results</li>
+                <li id="bxs-analyse"><i class='bx bxs-analyse'></i> Analytics</li>
+                <li><i class='bx bxs-color'></i> Logs</li>
+                <li><i class='bx bxs-book'></i> Manage Literature</li>
+                <li><i class='bx bxs-folder'></i></i> Question Banks</li>
+                <li><i class='bx bxs-edit'></i> Test Reports</li>
+                <li><i class='bx bxs-bell-ring'></i> Notifications</li>
+            </ul>
+        </div>
+
+        <!-- Main Dashboard Content -->
+        <div class="main-content">
+            <div class="top-bar">
+                <div id="greeting" class="greeting"></div>
+                <div class="top-right">
+                    <button class="btn profile-btn"><i class='bx bx-arrow-back'></i></button>
+                    <button class="btn logout-btn" onclick="window.location.href='/facProfile'"><i
+                            class='bx bx-user'></i></button>
+                    <button class="btn back-btn"><i class='bx bxs-log-out'></i></button>
+                </div>
+            </div>
+            <h2>Hello !, {{host_name}}</h2>
+
+            <div class="content-cards" id="hide-out">
+                <h2>Manage Classrooms
+                </h2>
+                <div class="classroomHandler">
+                    {% for classroom in classrooms %}
+                        <div class="box-claroom">
+                            <div class="classroom-name-holder">
+                                <p>{{ classroom.classroom_name }}</p>
+                            </div>
+                            <div class="code-container" id="code-container-{{ classroom.id }}">
+                                <p>{{ classroom.classroom_code }}</p>
+                            </div>
+                            <div class="manage-button" id="manage-button-{{ classroom.id }}">
+                                <p class="hover-p">Manage</p>
+                            </div>
+                            <div class="blurer" id="blurer-{{ classroom.id }}" style="display: none;">
+                                <!-- Add any content you'd like for the "blurer" -->
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="box-claroom adder" onclick="openCreateClassroom()">
+                        <p>+</p>
+                    </div>
+                </div>
+                
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        // Attach event listeners to all 'manage-button' elements
+                        document.querySelectorAll('.manage-button').forEach((button) => {
+                            button.addEventListener('click', (event) => {
+                                console.log("Button clicked"); // Debugging log
+                                
+                                // Extract classroom ID from the button's ID
+                                const classroomId = button.id.split('-')[2]; 
+                                
+                                // Extract the classroom code from the corresponding container
+                                const classroomCodeElement = document.getElementById(`code-container-${classroomId}`);
+                                if (!classroomCodeElement) {
+                                    console.error(`Classroom code container not found for ID: ${classroomId}`);
+                                    return;
+                                }
+                                const classroomCode = classroomCodeElement.textContent.trim();
+                
+                                console.log(`Classroom ID: ${classroomId}, Code: ${classroomCode}`); // Debugging log
+                
+                                // Send classroom_code to the server
+                                fetch("{% url 'store_classroom_code' %}", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": "{{ csrf_token }}", // Include CSRF token
+    },
+    body: new URLSearchParams({
+        classroom_code: classroomCode, // Send classroom code
+    }),
+})
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then((data) => {
+        if (data.success) {
+            console.log('Classroom code stored in session successfully.');
+            console.log('Retrieved data:', data.data); // Process and display retrieved data
+        } else {
+            console.error(`Error: ${data.message}`);
+        }
+    })
+    .catch((error) => {
+        console.error('Fetch error:', error);
+    });
+
+                
+                                // Show the blurer and overlay effects
+                                document.getElementById(`blurer-${classroomId}`).style.display = 'flex';
+                                const windowBlurer = document.querySelector('.window-blurer');
+                                if (windowBlurer) {
+                                    windowBlurer.style.display = 'flex';
+                                } else {
+                                    console.error('Window blurer element not found.');
+                                }
+                            });
+                        });
+                    });
+                </script>
+                
+                
+                
+                <h2>Viva Sessions</h2>
+                <div class="card-slider">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Viva 1</h3>
+                            <div class="card-actions">
+                                <button class="action-btn edit-btn" title="Edit"></button>
+                                <button class="action-btn cancel-btn" title="Cancel"></button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <p><strong>Classroom:</strong> A-101</p>
+                            <p><strong>Date & Time:</strong> 25th Nov, 2:00 PM - 4:00 PM</p>
+                            <p><strong>Based on PDF:</strong> Viva_2024.pdf</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Viva 2</h3>
+                            <div class="card-actions">
+                                <button class="action-btn edit-btn" title="Edit"></button>
+                                <button class="action-btn cancel-btn" title="Cancel"></button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <p><strong>Classroom:</strong> B-202</p>
+                            <p><strong>Date & Time:</strong> 26th Nov, 10:00 AM - 12:00 PM</p>
+                            <p><strong>Based on PDF:</strong> Viva_2024_Advanced.pdf</p>
+                        </div>
+                    </div>
+                    <!-- Add more cards as needed -->
+                </div>
+
+            </div>
+            <div class="content-cards content-cards-new" id="analytics-holdout">
+                <div class="card-classroom-holder">
+                    <div class="green-holder-class">
+                        <div class="classroomNameHolder">
+                            <h2>Database Management Systems</h2>
+                            <p style="margin-top: -8px;"><span style="font-weight: 600;">Enrolled Students</span>: 45
+                            </p>
+                        </div>
+                        <div class="classroomCodeHolder">
+                            <div class="textContainerCode">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="div-for-the-scedule-info">
+                        <div class="viva-pract" onclick="openWindowPrac()">
+                            <div class="VivaNames">
+                                <p>Unit 1 Dbms Viva</p>
+                            </div>
+                            <div class="DateTimeViva">
+                                <p><strong>Date:</strong> 28-02-2006</p>
+                                <p><strong>Time:</strong> 12:45</p>
+                            </div>
+                            <div class="totalStudentsGivenNotGiven">
+                                <p><strong>Total Students:</strong> 45</p>
+                                <p><strong>Given Students:</strong> 36</p>
+                            </div>
+                        </div>
+                        <div class="viva-pract" onclick="openWindowPrac()">
+                            <div class="VivaNames">
+                                <p>Unit 1 Dbms Viva</p>
+                            </div>
+                            <div class="DateTimeViva">
+                                <p><strong>Date:</strong> 28-02-2006</p>
+                                <p><strong>Time:</strong> 12:45</p>
+                            </div>
+                            <div class="totalStudentsGivenNotGiven">
+                                <p><strong>Total Students:</strong> 45</p>
+                                <p><strong>Given Students:</strong> 36</p>
+                            </div>
+                        </div>
+                        <div class="viva-pract" onclick="openWindowPrac()">
+                            <div class="VivaNames">
+                                <p>Unit 2 Dbms Viva</p>
+                            </div>
+                            <div class="DateTimeViva">
+                                <p><strong>Date:</strong> 01-03-2006</p>
+                                <p><strong>Time:</strong> 12:45</p>
+                            </div>
+                            <div class="totalStudentsGivenNotGiven">
+                                <p><strong>Total Students:</strong> 45</p>
+                                <p><strong>Given Students:</strong> 36</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <script>
+                    function openWindowPrac() {
+                        windowblurerPlusResult = document.getElementById('window-blurerPlusResult');
+                        windowblurerPlusResult.style.display = 'flex';
+                    }
+                    function openCreateClassroom(){
+                        blurerCreateClassroom = document.getElementById('window-blurerCreateClassroom');
+                        blurerCreateClassroom.style.display = 'flex';
+                    }
+                </script>
+            </div>
+            <div class="content-cards mediaManagerBlock" id="mediaManagerBlock">
+                <div class="fileDirectory">
+                    <div class="directoryName">
+                        <p>File Directory</p>
+                    </div>
+                    <div id="createdLineFilesContainer">
+                        <div class="createdLineFile">
+                            <p>Database MS</p>
+                            <p><span style="font-weight: 600;">8</span></p>
+                        </div>
+                    </div>
+                    <div class="createFileDirectory" id="createFileDirectory">
+                        <p id="plusIcons">+</p>
+                        <form id="directoryForm" style="display: none;">
+                            <input type="text" id="directoryNameInput" placeholder="Enter Directory Name" />
+                            <button type="button" id="createDirectoryButton" onclick="createDirect()">Create</button>
+                        </form>
+                    </div>
+                </div>
+                <script>const createFileDirectory = document.getElementById('createFileDirectory');
+                    const directoryForm = document.getElementById('directoryForm');
+                    const directoryNameInput = document.getElementById('directoryNameInput');
+                    const createDirectoryButton = document.getElementById('createDirectoryButton');
+                    const createdLineFilesContainer = document.getElementById('createdLineFilesContainer');
+                    const plusIcons = document.getElementById('plusIcons');
+
+                    // Toggle the form when the "+" button is clicked
+                    createFileDirectory.addEventListener('click', () => {
+                        if (!createFileDirectory.classList.contains('expanded')) {
+                            createFileDirectory.classList.add('expanded');
+                            directoryForm.style.display = 'flex';
+                            plusIcons.style.display = 'none';
+                        }
+                    });
+
+                    // Create a new directory when the form is submitted
+                    createDirectoryButton.addEventListener('click', () => {
+                        const directoryName = directoryNameInput.value.trim();
+                        if (directoryName) {
+                            // Create a new directory element
+                            const newDirectory = document.createElement('div');
+                            newDirectory.classList.add('createdLineFile');
+                            newDirectory.innerHTML = `<p>${directoryName}</p><p><span style="font-weight: 600;">0</span></p>`;
+
+                            // Append it to the container
+                            createdLineFilesContainer.appendChild(newDirectory);
+
+                            // Clear the input
+                            directoryNameInput.value = '';
+
+                            // Reset the "+" button to its original state
+                            createDirect();
+                        }
+                    });
+                    function createDirect() {
+                        console.log(createFileDirectory); // Log the element
+                        console.log(directoryForm);       // Log the element
+
+                        // Ensure elements are not null
+                        if (createFileDirectory && directoryForm) {
+                            createFileDirectory.classList.remove('expanded'); // Remove class
+                            directoryForm.style.display = 'none';             // Hide form
+                        } else {
+                            console.error("Element(s) not found");
+                        }
+                        console.log('hello'); // Confirm function call
+                    }
+
+                </script>
+
+                <div class="filesHolder">
+                    <div class="directoryName">
+                        <p>Files</p>
+                    </div>
+                    <div class="search-bar" style="height: 55px; margin-top: 0; box-shadow: none;">
+                        <input type="text" id="searchQuestions" style="box-shadow: none;" placeholder=" Search
+                            questions..." oninput="searchQuestions()">
+                        <button type="button" onclick="clearSearch()">Clear</button>
+                    </div>
+                    <div class="mainFileContainer">
+                        <div class="fileBlock">
+                            <div class="upperHeight">
+                                <div class="downloadBtton">
+                                    <i class='bx bx-download btnShadows'></i>
+                                </div>
+                                <div class="infoButtonHolder">
+                                    <i class='bx bx-info-circle'></i>
+                                </div>
+                                <div class="deleteButtonFile">
+                                    <i class='bx bx-message-alt-x'></i>
+                                </div>
+                            </div>
+                            <div class="fileLogoHolder">
+                                <i class='bx bxs-file-pdf pdfLogo'></i>
+                            </div>
+                            <div class="fileNameConatiner">
+                                <p>unit 1 DBMS.pdf</p>
+                            </div>
+                            <div class="fileSizeConatainer">
+                                <p>13-nov-2024</p>
+                            </div>
+                            <div class="blurerFile">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uploadFileButton">
+                        <p>Upload File <span style="font-size: 22px; color: rgb(45, 45, 45);"><i
+                                    class='bx bx-upload'></span></i></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hideOutListener = 0
+        hideOut = document.getElementById('hide-out');
+        contentCardsNew = document.querySelector('.content-cards-new');
+        bxsAnalyse = document.getElementById('bxs-analyse');
+        bxsAnalyse.addEventListener('click', () => {
+            if (hideOutListener == 0) {
+                hideOut.style.display = 'none';
+                contentCardsNew.style.display = 'block';
+                hideOutListener = 1;
+            }
+            else {
+                hideOut.style.display = 'block';
+                contentCardsNew.style.display = 'none';
+                hideOutListener = 0;
+            }
+        })
+    </script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="script.js"></script>
+    <script>
+        function vivaOpen(a) {
+            if (a == 1) {
+                document.querySelector('.viva-scheduler').style.display = 'block';
+            }
+            else {
+                document.querySelector('.viva-scheduler').style.display = 'none';
+
+            }
+        }
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('/api/questions/')
+                .then(response => response.json())
+                .then(data => {
+                    const questionContainer = document.querySelector('.generated-questions');
+
+                    let html = `<table><tr><th>Category</th><th>Questions</th></tr>`;
+
+                    data.understanding_questions.forEach((question, index) => {
+                        html += `<tr><td>Understanding Question ${index + 1}</td><td>${question}</td></tr>`;
+                    });
+                    data.remembering_level_questions.forEach((question, index) => {
+                        html += `<tr><td>Remembering Level Question ${index + 1}</td><td>${question}</td></tr>`;
+                    });
+                    data.application_level_questions.forEach((question, index) => {
+                        html += `<tr><td>Application Level Question ${index + 1}</td><td>${question}</td></tr>`;
+                    });
+                    data.multiple_choice_questions.forEach((mcq, index) => {
+                        html += `<tr><td>MCQ ${index + 1}</td><td>${mcq.question}</td></tr>`;
+                        mcq.options.forEach(option => {
+                            html += `<tr><td></td><td>- ${option}</td></tr>`;
+                        });
+                    });
+
+                    html += `</table>`;
+                    questionContainer.innerHTML = html;
+                })
+                .catch(error => console.error('Error fetching questions:', error));
+        });
+
+
+
+    </script>
+    <div class="window-blurer">
+        <div class="main-manage-window">
+            <button class="btner profile-btn" onclick="vivaOpen(0)"><i class='bx bx-arrow-back'></i></button>
+            <div class="viva-schedule-header">
+                <h2>Manage Classrooms</h2>
+            </div>
+            <div class="s2-sides">
+                <div class="manage-options">
+                    <div class="block-cargo">
+                        <div class="icon">
+                            <i class='bx bx-file cloker'></i>
+                        </div>
+                        <h3>Joined Students</h3>
+                        <p>View the list of students who have joined.</p>
+                    </div>
+                    <div class="block-cargo">
+                        <div class="icon">
+                            <i class='bx bxs-camera-home cloker'></i>
+                        </div>
+                        <h3>Viva Participation</h3>
+                        <p>students participated in viva exams.</p>
+                    </div>
+                    <div class="block-cargo">
+                        <div class="icon">
+                            <i class='bx bx-time-five cloker'></i>
+                        </div>
+                        <h3>Manage Viva Timing</h3>
+                        <p>Update viva examination timings.</p>
+                    </div>
+                    <div class="block-cargo">
+                        <div class="icon">
+                            <i class='bx bxs-pie-chart-alt-2 cloker'></i>
+                        </div>
+                        <h3>Student Results</h3>
+                        <p>Access and manage student results.</p>
+                    </div>
+                    <div class="block-cargo">
+                        <div class="icon">
+                            <i class='bx bxs-book cloker'></i>
+                        </div>
+                        <h3>Question Bank</h3>
+                        <p>View and update the question bank.</p>
+                    </div>
+                    <div class="block-cargo">
+                        <div class="icon">
+                            <i class='bx bxs-videos cloker'></i>
+                        </div>
+                        <h3>Manage Literature</h3>
+                        <p>Organize and edit literature resources.</p>
+                    </div>
+                </div>
+
+                <div class="scheduled_viva-block">
+                    <div class="p-header-viva-block">
+                        <p>Schedule Viva</p>
+                    </div>
+                    <div class="viva-lock">
+                        {% for viva in upcoming_vivas %}
+                        <div class="add-one-viva">
+                            <div class="viva-details">
+                                <span class="viva-name">{{viva.subjectName}}</span>
+                                <span class="viva-date">Date: {{ viva.vivaDate }}</span>
+                                <span class="viva-time">Time: {{ viva.vivaTime }}</span>
+                            </div>
+                            <div class="viva-actions">
+                                <button class="edit-btn">Edit</button>
+                                <button class="delete-btn">Del</button>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                    <div class="p-header-viva-block">
+                        <p>Previous</p>
+                    </div>
+                    <div class="previous-block-viva">
+                        {% for viva in past_vivas %}
+                        <div class="previous-viva-min">
+                            <div class="date-viva-held">
+                                <p>{{viva.vivaDate}}</p>
+                            </div>
+                            <div class="previous-viva-name">
+                                <p>{{ viva.subjectName }}</p>
+                            </div>
+                            <div class="buttons-previous">
+                                <p>Details</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="scedule-viva-test">
+                        <div class="card schedule-card">
+                            <p>Schedule a New Test</p>
+                            <button class="schedule-btn" onclick="vivaOpen(1)">Schedule Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="window-blurerPlusResult" id="window-blurerPlusResult">
+        <div class="main-manage-window">
+            <button class="btner profile-btn" onclick="vivaOpen(0)"><i class='bx bx-arrow-back'></i></button>
+            <div class="viva-schedule-header">
+                <h2>Database Management Systems</h2>
+            </div>
+            <div class="questions-bank-mention">
+                <p><span style="font-weight: 600;">Question Bank</span>: dbmsQuestionBank.pdf</p>
+            </div>
+            <div class="questions-bank-mention" style="margin-top: -10px;">
+                <p><span style="font-weight: 600;">Date</span>: 28-02-2006</p>
+            </div>
+            <div class="total-aggregateAndDetails">
+                <div class="cards-aggregate">
+                    <div class="text-aggreate">
+                        <p>Total Percentage</p>
+                    </div>
+                    <div class="circle-container-per">
+                        <div class="circle-percentage" id="percentageCircle">
+                            <div class="percentage-text" id="percentageText">0%
+                            </div>
+                            <div class="text-circler">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>// Function to set the percentage
+                        function setPercentage(percentage) {
+                            const circle = document.getElementById('percentageCircle');
+                            const text = document.getElementById('percentageText');
+
+                            // Set the text inside the circle
+                            text.textContent = `${percentage}%`;
+
+                            // Adjust the conic-gradient for the visual representation
+                            circle.style.background = `conic-gradient(
+                                #4caf50 ${percentage * 3.6}deg, 
+                                #e0e0e0 ${percentage * 3.6}deg
+                            )`;
+                        }
+
+                        // Set the desired percentage
+                        setPercentage(13); // You can change the value here
+                    </script>
+                </div>
+                <div class="buttons-download-view">
+                    <button class="dv-buttons">Download details</button>
+                    <button class="dv-buttons">View Details</button>
+                </div>
+            </div>
+            <div class="searchAndStudent">
+                <div class="search-bar" style="height: 55px;">
+                    <input type="text" id="searchQuestions" placeholder="Search questions..."
+                        oninput="searchQuestions()">
+                    <button type="button" onclick="clearSearch()">Clear</button>
+                </div>
+                <div class="studentDetailsViva">
+                    <div class="encr">
+                        <table class="details-table">
+                            <thead>
+                                <tr>
+                                    <th>ENCR</th>
+                                    <th>Name</th>
+                                    <th>Percentage</th>
+                                    <th>Grade</th>
+                                    <th>
+                                        <span class="arrow">↓</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="expandable-row">
+                                    <td>101</td>
+                                    <td>John Doe</td>
+                                    <td>87%</td>
+                                    <td>A</td>
+                                    <td></td>
+                                </tr>
+                                <tr class="expanded-info">
+                                    <td colspan="5">
+                                        <div class="details">
+                                            <strong>Questions and Answers:</strong>
+                                            <ol>
+                                                <li>Q1: What is AI? <br> A: Artificial Intelligence is the simulation of
+                                                    human intelligence in machines. <br> Marks: 8/10</li>
+                                                <li>Q2: Explain Machine Learning? <br> A: It is a subset of AI that
+                                                    focuses on building systems that learn from data. <br> Marks: 9/10
+                                                </li>
+                                                <li>Q3: Define Overfitting? <br> A: Overfitting happens when a model
+                                                    learns noise in training data. <br> Marks: 7/10</li>
+                                                <li>Q4: What is Data Normalization? <br> A: It's a technique to
+                                                    standardize data for better model performance. <br> Marks: 10/10
+                                                </li>
+                                                <li>Q5: What are Neural Networks? <br> A: They are computing systems
+                                                    inspired by the human brain. <br> Marks: 9/10</li>
+                                            </ol>
+                                            <strong>Feedback:</strong> Excellent performance, needs to improve clarity
+                                            in overfitting explanation.
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="expandable-row">
+                                    <td>102</td>
+                                    <td>Jane Smith</td>
+                                    <td>92%</td>
+                                    <td>A+</td>
+                                    <td></td>
+                                </tr>
+                                <tr class="expanded-info">
+                                    <td colspan="5">
+                                        <div class="details">
+                                            <strong>Questions and Answers:</strong>
+                                            <ol>
+                                                <li>Q1: What is AI? <br> A: AI simulates human intelligence in
+                                                    computers. <br> Marks: 9/10</li>
+                                                <li>Q2: Explain Machine Learning? <br> A: It enables computers to learn
+                                                    and make decisions. <br> Marks: 10/10</li>
+                                                <li>Q3: Define Overfitting? <br> A: A model fitting training data too
+                                                    closely, losing generalization. <br> Marks: 8/10</li>
+                                                <li>Q4: What is Data Normalization? <br> A: Standardizing data to
+                                                    eliminate bias. <br> Marks: 9/10</li>
+                                                <li>Q5: What are Neural Networks? <br> A: Algorithms mimicking human
+                                                    brain processes. <br> Marks: 10/10</li>
+                                            </ol>
+                                            <strong>Feedback:</strong> Excellent understanding with minor improvements
+                                            needed in explanation of data normalization.
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const expandableRows = document.querySelectorAll('.expandable-row');
+
+                        expandableRows.forEach(row => {
+                            row.addEventListener('click', () => {
+                                const nextRow = row.nextElementSibling;
+                                if (nextRow.classList.contains('expanded-info')) {
+                                    nextRow.classList.toggle('show');
+                                }
+                            });
+                        });
+                    });
+
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="window-blurerCreateClassroom" id="window-blurerCreateClassroom">
+        <div class="main-manage-window main-manage-windownew">
+            <button class="btner profile-btn" onclick="vivaOpen(0)"><i class='bx bx-arrow-back'></i></button>
+            <div class="containerAlpha">
+                <div class="form-header">
+                    <h2>Create a Classroom</h2>
+                    <p>Provide the details below to create a new classroom.</p>
+                </div>
+                <form id="classroomForm" class="classroom-form" action="/CreateClassroom/" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="classroomName">
+                            <i class="fas fa-chalkboard"></i> Classroom Name
+                        </label>
+                        <input type="text" id="classroomName" placeholder="Enter classroom name" name="classroomName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseCode">
+                            <i class="fas fa-code"></i> Course Code
+                        </label>
+                        <input type="text" id="courseCode" placeholder="Enter course code" name="courseCode" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Create Classroom</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

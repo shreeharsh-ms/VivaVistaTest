@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VivaVista-AI</title>
+    {%load static%}
+    <style>
+    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <style>
+        .round {
+            border-radius: 50%;
+            transition: filter 1s ease, opacity 1s ease;
+        }
+
+        .name-profile {
+            font-weight: bold;
+            transition: opacity 1s ease;
+        }
+
+        .hidden {
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        .visible {
+            opacity: 1;
+            filter: blur(0);
+        }
+
+        .footer-big {
+            display: flex;
+        }
+
+        footer ul {
+            padding: 0;
+            margin: 0
+        }
+
+        footer li {
+            list-style: none
+        }
+
+        footer a:focus,
+        footer a:hover {
+            text-decoration: none;
+            -webkit-transition: .3s ease;
+            -o-transition: .3s ease;
+            transition: .3s ease
+        }
+
+        footer a:focus {
+            outline: 0
+        }
+
+        footer img {
+            max-width: 100%
+        }
+
+        footer p {
+            font-size: 16px;
+            line-height: 30px;
+            color: #898b96;
+            font-weight: 300
+        }
+
+        footer h4 {
+            font-family: Rubik, sans-serif;
+            margin: 0;
+            font-weight: 400;
+            padding: 0;
+            color: #363940
+        }
+
+        footer a {
+            color: #5867dd
+        }
+
+        .no-padding {
+            padding: 0 !important
+        }
+
+        .go_top {
+            line-height: 40px;
+            cursor: pointer;
+            width: 40px;
+            background: #5867dd;
+            color: #fff;
+            position: fixed;
+            -webkit-box-shadow: 0 4px 4px rgba(0, 0, 0, .1);
+            box-shadow: 0 4px 4px rgba(0, 0, 0, .1);
+            -webkit-border-radius: 50%;
+            border-radius: 50%;
+            right: -webkit-calc((100% - 1140px)/ 2);
+            right: calc((100% - 1140px)/ 2);
+            z-index: 111;
+            bottom: 80px;
+            text-align: center
+        }
+
+        .footer-big {
+            padding: 105px 0 65px 0
+        }
+
+        .footer-big .footer-widget {
+            margin-bottom: 40px
+        }
+
+        .footer--light {
+            background: #e7e8ed
+        }
+
+        .footer-big .footer-menu ul li a,
+        .footer-big p,
+        .footer-big ul li {
+            color: #898b96
+        }
+
+        .footer-menu {
+            padding-left: 48px
+        }
+
+        .footer-menu ul li a {
+            font-size: 15px;
+            line-height: 32px;
+            -webkit-transition: .3s;
+            -o-transition: .3s;
+            transition: .3s
+        }
+
+        .footer-menu ul li a:hover {
+            color: #5867dd
+        }
+
+        .footer-menu--1 {
+            width: 100%
+        }
+
+        .footer-widget-title {
+            line-height: 42px;
+            margin-bottom: 10px;
+            font-size: 18px
+        }
+
+        .mini-footer {
+            background: #192027;
+            text-align: center;
+            padding: 32px 0
+        }
+
+        .mini-footer p {
+            margin: 0;
+            line-height: 26px;
+            font-size: 15px;
+            color: #999
+        }
+
+        .mini-footer p a {
+            color: #5867dd
+        }
+
+        .mini-footer p a:hover {
+            color: #34bfa3
+        }
+
+        .widget-about img {
+            display: block;
+            margin-bottom: 30px
+        }
+
+        .widget-about p {
+            font-weight: 400
+        }
+
+        .widget-about .contact-details {
+            margin: 30px 0 0 0
+        }
+
+        .widget-about .contact-details li {
+            margin-bottom: 10px
+        }
+
+        .widget-about .contact-details li:last-child {
+            margin-bottom: 0
+        }
+
+        .widget-about .contact-details li span {
+            padding-right: 12px
+        }
+
+        .widget-about .contact-details li a {
+            color: #5867dd
+        }
+
+        @media (max-width:991px) {
+            .footer-menu {
+                padding-left: 0
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script>
+        const video = document.getElementById('background-video');
+        video.playbackRate = 5; 
+    </script>
+    <video autoplay loop muted playsinline class="super-back" id="background-video">
+        <source src="{%static 'loop.mp4'%}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="container">
+        <div class="navigation">
+            <div class="logo">
+                <h1>VivaVista</h1>
+            </div>
+            <div class="nav-items">
+                <nav>
+                    <ul>
+                        <li><a href="#">About us</a></li>
+                        <li><a class="btn btn-nav sign-in" onclick="window.location.href='/StdSignIN'" style="cursor: pointer;">Sign In</a></li>
+                        <li><a class="btn btn-nav" onclick="window.location.href='/signUp'" style="cursor: pointer;">Sign Up</a></li>
+                        <style>
+                            .btn-nav{
+                                transition:0.5s ease;
+                            }
+                            .btn-nav:hover{
+                                background-color: #1aa186;
+                                transition:0.5s ease;
+
+                            }
+                        </style>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="main-liner">
+            <div class="info-container">
+                <p class="topper">Kick start your analytics</p>
+                <p class="Heading">Welcome to</p>
+                <p class="sub-heading">VivaVista</p>
+                <p class="description"> Revolutionize viva management with a streamlined platform for effortless
+                    scheduling, seamless hosting, and comprehensive management. Automate evaluation, track progress, and
+                    centralize documentation—all in one intuitive solution designed for students, educators, and
+                    institutions</p>
+                <div class="boxes">
+                    <div class="box-1">
+                        <p class="mandel">Tools</p>
+                        <div class="tools">
+                            <div class="tool1">
+                                <i class='bx bxs-pie-chart-alt-2 logo-icon'></i>
+                                <p>Manage Literature</p>
+                                <div class="hider">
+
+                                </div>
+                            </div>
+                            <div class="tool1">
+                                <i class='bx bxs-bar-chart-alt-2 logo-icon'></i>
+                                <p>Analytics</p>
+                                <div class="hider">
+
+                                </div>
+
+                            </div>
+                            <div class="tool1">
+                                <i class='bx bxs-analyse logo-icon'></i>
+                                <p>Schedule Viva</p>
+                                <div class="hider">
+
+                                </div>
+
+                            </div>
+                            <div class="tool1">
+                                <i class='bx bxl-google logo-icon'></i>
+                                <p>Generate Questions</p>
+                                <div class="hider">
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-2">
+                        <p class="mandel">Trstimonials</p>
+                        <div class="tools">
+                            <div class="pic-myself">
+                                <img src="https://media.licdn.com/dms/image/D5603AQHNIVUp03mJQw/profile-displayphoto-shrink_100_100/0/1719854230846?e=1725494400&v=beta&t=43wFFdt_feW1FzNQe74MNdRn47y275S9F96xq-4pW4g"
+                                    alt="profile" class="round">
+                            </div>
+                            <div class="short-info">
+                                <p class="name-profile">Shreeharsh Shivpuje</p>
+                                <button class="btn-click">Read more</button>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        const profiles = [
+                            {
+                                name: "Shreeharsh Shivpuje",
+                                photo: "https://media.licdn.com/dms/image/v2/D5603AQHNIVUp03mJQw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1719854230846?e=2147483647&v=beta&t=vpK2_jjJHZ4Pkvw05C9vAGWOI3O6wep-O50Pc7DmtS0"
+                            },
+                            {
+                                name: "Ram Rajurkar",
+                                photo: "https://media.licdn.com/dms/image/v2/D4D03AQGkyRuhjC_Pzw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1730914491799?e=2147483647&v=beta&t=YtjEPbIHKhJCh_OAuRgXm8RfigSuLEFtIhYB8em3jeg"
+                            },
+                            {
+                                name: "Shon Kapate",
+                                photo: "https://media.licdn.com/dms/image/v2/D4D03AQF34s2yQWHnzA/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1726684993157?e=2147483647&v=beta&t=A1tb0Zcg13-my6UJy8HXLMbaGWozQTMK762u9YA-Kak"
+                            },
+                            {
+                                name: "Atharva Rahate",
+                                photo: "https://media.licdn.com/dms/image/v2/D5603AQHrhrOzkcimkg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1727037375528?e=2147483647&v=beta&t=Hvh6MS4AH-4VNks7osiAlD5CaxXjqgsAghEq48DSDY8"
+                            },
+                            {
+                                name: "Tejas Landhe",
+                                photo: "https://via.placeholder.com/100?text=Tejas+Landhe"
+                            }
+                        ];
+
+                        let currentIndex = 0;
+
+                        function updateProfile() {
+                            const profile = profiles[currentIndex];
+                            const imageElement = document.querySelector(".round");
+                            const nameElement = document.querySelector(".name-profile");
+
+                            // Add "hidden" class for transition
+                            imageElement.classList.add("hidden");
+                            nameElement.classList.add("hidden");
+
+                            // Update content after delay for smooth transition
+                            setTimeout(() => {
+                                imageElement.src = profile.photo;
+                                nameElement.textContent = profile.name;
+
+                                // Remove "hidden" class to show the new content
+                                imageElement.classList.remove("hidden");
+                                nameElement.classList.remove("hidden");
+                            }, 500);
+
+                            // Update index
+                            currentIndex = (currentIndex + 1) % profiles.length;
+                        }
+
+                        // Set an interval to update the profile every 1 second
+                        setInterval(updateProfile, 3000);
+
+                        // Call the function once to set the initial profile
+                        updateProfile();
+
+                    </script>
+                </div>
+            </div>
+            <div class="img-container">
+                <div class="img-holder">
+                    <img src="{%static 'imgs/rem.png'%}" alt="back-img" class="imger">
+                </div>
+                <div class="someFrame slid1">
+
+                </div>
+                <div class="someFrame slid2">
+
+                </div>
+                <div class="someFrame slid3">
+
+                </div>
+                <div class="someFrame slid4">
+
+                </div>
+            </div>
+        </div>
+        <div class="lara">
+            <div class="benifit-text">
+                <p class="Heading" style="margin: 0; font-size: 5rem;">AI-powered insights for smarter viva management
+                    and streamlined academic evaluation.</p>
+            </div>
+            <div class="main-info">
+                <div class="sidebar-middle">
+                    <div class="info-ben info1" onclick="changeContent(1)">
+                        <div class="number">
+                            <p class="number-d">1</p>
+                        </div>
+                        <div class="heading-ben">
+                            <p class="trendi">Smart Assessment Tools</p>
+                            <p class="trindi-bor">Automated Question Generation, Evaluation, and Real-Time Cheat
+                                Detection
+                            </p>
+                        </div>
+                    </div>
+                    <div class="info-ben info1" onclick="changeContent(2)">
+                        <div class="number">
+                            <p class="number-d">2</p>
+                        </div>
+                        <div class="heading-ben">
+                            <p class="trendi">Seamless Classroom Management</p>
+                            <p class="trindi-bor">Classroom Management and Real-Time Notifications</p>
+                        </div>
+                    </div>
+                    <div class="info-ben info1" onclick="changeContent(3)">
+                        <div class="number">
+                            <p class="number-d">3</p>
+                        </div>
+                        <div class="heading-ben">
+                            <p class="trendi">Enhanced Security and Authentication</p>
+                            <p class="trindi-bor">Multi-layered authentication for both users and hosts, ensuring secure
+                                access</p>
+                        </div>
+                    </div>
+                    <div class="info-ben info1" onclick="changeContent(4)">
+                        <div class="number">
+                            <p class="number-d">4</p>
+                        </div>
+                        <div class="heading-ben">
+                            <p class="trendi">Resource & Reporting Insights</p>
+                            <p class="trindi-bor">Comprehensive Report Generation and Resource Management
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-benifit" id="content-container">
+                    <!-- Default Content for Section 1 (Smart Assessment Tools) -->
+                    <div class="card-info">
+                        <div class="img-pic">
+                            <img src="https://example.com/question-icon.png" alt="" class="alter-img">
+                        </div>
+                        <p class="card-head">Automated Question Generation:</p>
+                        <p class="text-inside-card">AI-driven question generation ensures a personalized and tailored
+                            assessment experience. By adjusting difficulty levels and subject focus, it creates a
+                            thorough evaluation process, allowing for a more precise understanding of a student's
+                            capabilities.</p>
+                    </div>
+                    <div class="card-info">
+                        <div class="img-pic">
+                            <img src="https://example.com/evaluation-icon.png" alt="" class="alter-img">
+                        </div>
+                        <p class="card-head">Automated Evaluation System:</p>
+                        <p class="text-inside-card">Instant and unbiased grading through AI reduces human error and
+                            manual effort. The system evaluates oral and written responses swiftly and accurately,
+                            providing fair, reliable results for every participant in real-time.</p>
+                    </div>
+                    <div class="card-info">
+                        <div class="img-pic">
+                            <img src="https://example.com/cheat-detection-icon.png" alt="" class="alter-img">
+                        </div>
+                        <p class="card-head">Real-Time Cheat Detection:</p>
+                        <p class="text-inside-card">AI-powered monitoring ensures a secure and fair exam environment by
+                            detecting cheating in real time. This guarantees the integrity of the evaluation process,
+                            protecting both students and evaluators from unfair practices.</p>
+                    </div>
+                    <div class="circle-change" onclick="turnNext()">
+                        <i class='bx bx-right-arrow-circle arrow-cricle'></i>
+                    </div>
+                </div>
+                <script>
+                    let turn = 1;  // Start at the first section
+
+                    // Function to move to the next section when "next" button is clicked
+                    function turnNext() {
+                        if (turn < 4) {
+                            turn++;  // Move to the next section
+                        } else {
+                            turn = 1;  // If at the last section, loop back to the first
+                        }
+                        changeContent(turn);  // Update content to the new section
+                    }
+
+                    // Function to change the content dynamically based on the section number
+                    function changeContent(sectionNumber) {
+                        const contentContainer = document.getElementById("content-container");
+
+                        // Clear current content
+                        contentContainer.innerHTML = '';
+
+                        if (sectionNumber === 1) {
+                            // Smart Assessment Tools
+                            contentContainer.innerHTML = `
+            <div class="card-info">
+                <div class="img-pic">
+                    <img src="https://example.com/question-icon.png" alt="" class="alter-img">
+                </div>
+                <p class="card-head">Automated Question Generation:</p>
+                <p class="text-inside-card">AI-driven question generation ensures a personalized and tailored assessment experience. By adjusting difficulty levels and subject focus, it creates a thorough evaluation process, allowing for a more precise understanding of a student's capabilities.</p>
+            </div>
+            <div class="card-info">
+                <div class="img-pic">
+                    <img src="https://example.com/evaluation-icon.png" alt="" class="alter-img">
+                </div>
+                <p class="card-head">Automated Evaluation System:</p>
+                <p class="text-inside-card">Instant and unbiased grading through AI reduces human error and manual effort. The system evaluates oral and written responses swiftly and accurately, providing fair, reliable results for every participant in real-time.</p>
+            </div>
+            <div class="card-info">
+                <div class="img-pic">
+                    <img src="https://example.com/cheat-detection-icon.png" alt="" class="alter-img">
+                </div>
+                <p class="card-head">Real-Time Cheat Detection:</p>
+                <p class="text-inside-card">AI-powered monitoring ensures a secure and fair exam environment by detecting cheating in real time. This guarantees the integrity of the evaluation process, protecting both students and evaluators from unfair practices.</p>
+            </div>
+            <div class="circle-change" onclick="turnNext()">
+                <i class='bx bx-right-arrow-circle arrow-cricle'></i>
+            </div>
+        `;
+                        } else if (sectionNumber === 2) {
+                            // Seamless Classroom Management
+                            contentContainer.innerHTML = `
+            <div class="card-info">
+                <div class="img-pic">
+                    <img src="https://example.com/classroom-icon.png" alt="" class="alter-img">
+                </div>
+                <p class="card-head">Classroom Management:</p>
+                <p class="text-inside-card">Centralized tools for scheduling, organizing, and monitoring all classroom activities, making it easier to manage and oversee sessions.</p>
+            </div>
+            <div class="card-info">
+                <div class="img-pic">
+                    <img src="https://example.com/notification-icon.png" alt="" class="alter-img">
+                </div>
+                <p class="card-head">Real-Time Notifications:</p>
+                <p class="text-inside-card">Instant alerts for students and hosts on viva schedules, updates, and results, ensuring everyone stays informed at every stage.</p>
+            </div>
+            <div class="circle-change" onclick="turnNext()">
+                <i class='bx bx-right-arrow-circle arrow-cricle'></i>
+            </div>
+        `;
+                        } else if (sectionNumber === 3) {
+                            // Enhanced Security and Authentication
+                            contentContainer.innerHTML = `
+            <div class="card-info">
+                <div class="img-pic">
+                    <img src="https://example.com/security-icon.png" alt="" class="alter-img">
+                </div>
+                <p class="card-head">Robust Security:</p>
+                <p class="text-inside-card">Multi-layered authentication for both users and hosts, ensuring secure and authorized access, keeping sensitive data safe throughout the process.</p>
+            </div>
+            <div class="circle-change" onclick="turnNext()">
+                <i class='bx bx-right-arrow-circle arrow-cricle'></i>
+            </div>
+        `;
+                        } else if (sectionNumber === 4) {
+                            // Resource & Reporting Insights
+                            contentContainer.innerHTML = `
+            <div class="card-info">
+                <div class="img-pic">
+                    <img src="https://example.com/report-icon.png" alt="" class="alter-img">
+                </div>
+                <p class="card-head">Comprehensive Report Generation:</p>
+                <p class="text-inside-card">Instantly generated performance reports, providing both evaluators and students with actionable insights to track progress and improvement.</p>
+            </div>
+            <div class="card-info">
+                <div class="img-pic">
+                    <img src="https://example.com/resource-icon.png" alt="" class="alter-img">
+                </div>
+                <p class="card-head">Resource and Study Notes Management:</p>
+                <p class="text-inside-card">Organize and manage study materials, notes, and resources in one place, enhancing preparation and access for both students and hosts.</p>
+            </div>
+            <div class="circle-change" onclick="turnNext()">
+                <i class='bx bx-right-arrow-circle arrow-cricle'></i>
+            </div>
+        `;
+                        }
+                    }
+
+                </script>
+
+            </div>
+        </div>
+        <div class="tools-info">
+            <div class="benifit-text">
+                <p class="Heading" style="margin: 0; font-size: 5rem;">Tools & Servicess</p>
+            </div>
+            <div class="tools-container">
+                <div class="visualization-intro">
+                    <div class="viz-img">
+                        <img src="{% static 'imgs/vizo.png' %}" alt="" class="img-viz">
+                    </div>
+                    <div class="viz-info-like">
+                        <div class="upper-viz">
+                            <p>AI Models</p>
+                        </div>
+                        <div class="lower-viz">
+                            <div class="plots">
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                            </div>
+                            <div class="viz-tools" style="color: white;">
+                                <div class="category category-1">
+                                    <p class="kota">TensorFlow</p>
+                                    <p class="bachat">TensorFlow is an open-source platform for building machine
+                                        learning models. It's particularly
+                                    </p>
+                                </div>
+                                <div class="category category-2">
+                                    <p class="kota">Keras</p>
+                                    <p class="bachat">Keras is a user-friendly deep learning framework built on top of
+                                        TensorFlow. It simplifies the process of building and training neural networks,
+                                        making it accessible for both beginners and experts.</p>
+                                </div>
+                                <div class="category category-3">
+                                    <p class="kota">PyTorch</p>
+                                    <p class="bachat">PyTorch is a powerful open-source machine learning library for
+                                        Python that allows for flexible and efficient training of neural networks,
+                                        commonly used in research and production-level AI applications.</p>
+                                </div>
+                                <!-- <div class="category category-2"></div>
+                                <div class="category category-3"></div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="visualization-intro">
+                    <div class="viz-img">
+                        <img src="{% static 'imgs/cloud.png' %}" alt="" class="img-viz">
+                    </div>
+                    <div class="viz-info-like">
+                        <div class="upper-viz">
+                            <p>OpenCV:
+                            </p>
+                        </div>
+                        <div class="lower-viz">
+                            <div class="plots">
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                            </div>
+                            <div class="viz-tools" style="color: white;">
+                                <!-- <div class="category-1">
+                                    <p>Matplotlib</p>
+                                    <p>Line Charts: Ideal for visualizing data trends over time.</p>
+                                    <p>Bar Charts: Useful for comparing different categories or groups.</p>
+                                    <p>Histograms: Great for displaying the distribution of a dataset.</p>
+                                    <p>Scatter Plots: Perfect for showing relationships between two variables.</p>
+                                </div>
+                                <div class="category-2">
+                                    <p>Seaborn</p>
+                                    <p>Heatmaps: Effective for visualizing correlations between variables.</p>
+                                    <p>Box Plots: Useful for showing the distribution of data based on quartiles.</p>
+                                    <p>Violin Plots: Combines box plot and kernel density plot to show data
+                                        distribution.</p>
+                                    <p>Pair Plots: Provides a matrix of scatter plots to visualize relationships between
+                                        multiple variables.</p>
+                                </div>
+                                <div class="category-3">
+                                    <p>Plotly</p>
+                                    <p>Interactive Charts: Allow users to explore data through zooming, panning, and
+                                        hovering.</p>
+                                    <p>3D Plots: Ideal for visualizing data in three dimensions.</p>
+                                    <p>Maps: Great for displaying geographical data and trends.</p>
+                                    <p>Subplots: Useful for comparing multiple charts in a single figure.</p>
+                                </div> -->
+                                <div class="category category-1">
+                                    <p class="kota">Confidence Detection</p>
+                                    <p class="bachat">Using gaze detection and eye-tracking models (often integrated
+                                        with OpenCV), you can detect where a person is looking, which can be used to
+                                        assess whether they are focused
+                                    </p>
+                                </div>
+                                <div class="category category-2">
+                                    <p class="kota">Gaze Detection</p>
+                                    <p class="bachat">Gaze Detection and Head Pose Estimation: A person’s gaze can be
+                                        tracked to detect if they are looking away from the screen, especially during
+                                        online exams or assessments. </p>
+                                </div>
+                                <div class="category category-3">
+                                    <p class="kota">Object Detection</p>
+                                    <p class="bachat">Real-time Object Detection: OpenCV supports loading models like
+                                        YOLO or SSD to detect and track multiple objects within a camera feed. This can
+                                        be useful for detecting unauthorized objects like a phone, paper, or a device
+                                        placed in the exam room.
+                                    </p>
+                                </div>
+                                <!-- <div class="category category-2"></div>
+                                <div class="category category-3"></div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="visualization-intro">
+                    <div class="viz-info-like">
+                        <div class="upper-viz">
+                            <p>API Integrations</p>
+                        </div>
+                        <div class="lower-viz">
+                            <div class="plots">
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                            </div>
+                            <div class="viz-tools" style="color: white;">
+                                <!-- <div class="category-1">
+                                    <p>Matplotlib</p>
+                                    <p>Line Charts: Ideal for visualizing data trends over time.</p>
+                                    <p>Bar Charts: Useful for comparing different categories or groups.</p>
+                                    <p>Histograms: Great for displaying the distribution of a dataset.</p>
+                                    <p>Scatter Plots: Perfect for showing relationships between two variables.</p>
+                                </div>
+                                <div class="category-2">
+                                    <p>Seaborn</p>
+                                    <p>Heatmaps: Effective for visualizing correlations between variables.</p>
+                                    <p>Box Plots: Useful for showing the distribution of data based on quartiles.</p>
+                                    <p>Violin Plots: Combines box plot and kernel density plot to show data
+                                        distribution.</p>
+                                    <p>Pair Plots: Provides a matrix of scatter plots to visualize relationships between
+                                        multiple variables.</p>
+                                </div>
+                                <div class="category-3">
+                                    <p>Plotly</p>
+                                    <p>Interactive Charts: Allow users to explore data through zooming, panning, and
+                                        hovering.</p>
+                                    <p>3D Plots: Ideal for visualizing data in three dimensions.</p>
+                                    <p>Maps: Great for displaying geographical data and trends.</p>
+                                    <p>Subplots: Useful for comparing multiple charts in a single figure.</p>
+                                </div> -->
+                                <div class="category category-1">
+                                    <p class="kota">Gemini API</p>
+                                    <p class="bachat">We leveraged the Gemini API for advanced generative AI tasks,
+                                        integrating its capabilities to enhance interactivity and automate complex
+                                        computations.
+                                    </p>
+                                </div>
+                                <div class="category category-2">
+                                    <p class="kota">ElevenLabs TTS</p>
+                                    <p class="bachat">The ElevenLabs Text-to-Speech API brought our content to life with
+                                        natural-sounding voices, providing dynamic audio outputs for various
+                                        applications.</p>
+                                </div>
+                                <div class="category category-3">
+                                    <p class="kota">Axios and Fetch API
+
+                                    </p>
+                                    <p class="bachat">Tools for making HTTP requests to back-end servers or APIs.
+                                        Used to fetch and display dynamic content on the frontend.
+                                    </p>
+                                </div>
+                                <!-- <div class="category category-2"></div>
+                                <div class="category category-3"></div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="viz-img">
+                        <img src="{% static 'imgs/vizo.png' %}" alt="" class="img-viz">
+                    </div>
+                </div>
+                <div class="visualization-intro">
+                    <div class="viz-info-like">
+                        <div class="upper-viz">
+                            <p>Core Libraries:
+                            </p>
+                        </div>
+                        <div class="lower-viz">
+                            <div class="plots">
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                            </div>
+                            <div class="viz-tools" style="color: white;">
+                                <!-- <div class="category-1">
+                                    <p>Matplotlib</p>
+                                    <p>Line Charts: Ideal for visualizing data trends over time.</p>
+                                    <p>Bar Charts: Useful for comparing different categories or groups.</p>
+                                    <p>Histograms: Great for displaying the distribution of a dataset.</p>
+                                    <p>Scatter Plots: Perfect for showing relationships between two variables.</p>
+                                </div>
+                                <div class="category-2">
+                                    <p>Seaborn</p>
+                                    <p>Heatmaps: Effective for visualizing correlations between variables.</p>
+                                    <p>Box Plots: Useful for showing the distribution of data based on quartiles.</p>
+                                    <p>Violin Plots: Combines box plot and kernel density plot to show data
+                                        distribution.</p>
+                                    <p>Pair Plots: Provides a matrix of scatter plots to visualize relationships between
+                                        multiple variables.</p>
+                                </div>
+                                <div class="category-3">
+                                    <p>Plotly</p>
+                                    <p>Interactive Charts: Allow users to explore data through zooming, panning, and
+                                        hovering.</p>
+                                    <p>3D Plots: Ideal for visualizing data in three dimensions.</p>
+                                    <p>Maps: Great for displaying geographical data and trends.</p>
+                                    <p>Subplots: Useful for comparing multiple charts in a single figure.</p>
+                                </div> -->
+                                <div class="category category-1">
+                                    <p class="kota">Numpy</p>
+                                    <p class="bachat">A fundamental library for numerical computing in Python.
+                                        Provides support for multi-dimensional arrays, mathematical functions, and
+                                        linear algebra operations.
+                                    </p>
+                                </div>
+                                <div class="category category-2">
+                                    <p class="kota">Pandas</p>
+                                    <p class="bachat">A powerful data manipulation and analysis library.
+                                        Offers DataFrame and Series objects for handling structured data.
+                                        Ideal for data cleaning, transformation, and exploratory analysis.</p>
+                                </div>
+                                <div class="category category-3">
+                                    <p class="kota">Scipy</p>
+                                    <p class="bachat">Built on NumPy, designed for scientific and technical computing.
+                                        Includes modules for optimization, integration, interpolation, and statistics.
+                                    </p>
+                                </div>
+                                <!-- <div class="category category-2"></div>
+                                <div class="category category-3"></div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="viz-img">
+                        <img src="{% static 'imgs/cloud.png' %}" alt="" class="img-viz">
+                    </div>
+                </div>
+                <div class="visualization-intro">
+                    <div class="viz-img">
+                        <img src="{% static 'imgs/cloud.png' %}" alt="" class="img-viz">
+                    </div>
+                    <div class="viz-info-like">
+                        <div class="upper-viz">
+                            <p>Front-End Technologies:
+                            </p>
+                        </div>
+                        <div class="lower-viz">
+                            <div class="plots">
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                            </div>
+                            <div class="viz-tools" style="color: white;">
+                                <!-- <div class="category-1">
+                                    <p>Matplotlib</p>
+                                    <p>Line Charts: Ideal for visualizing data trends over time.</p>
+                                    <p>Bar Charts: Useful for comparing different categories or groups.</p>
+                                    <p>Histograms: Great for displaying the distribution of a dataset.</p>
+                                    <p>Scatter Plots: Perfect for showing relationships between two variables.</p>
+                                </div>
+                                <div class="category-2">
+                                    <p>Seaborn</p>
+                                    <p>Heatmaps: Effective for visualizing correlations between variables.</p>
+                                    <p>Box Plots: Useful for showing the distribution of data based on quartiles.</p>
+                                    <p>Violin Plots: Combines box plot and kernel density plot to show data
+                                        distribution.</p>
+                                    <p>Pair Plots: Provides a matrix of scatter plots to visualize relationships between
+                                        multiple variables.</p>
+                                </div>
+                                <div class="category-3">
+                                    <p>Plotly</p>
+                                    <p>Interactive Charts: Allow users to explore data through zooming, panning, and
+                                        hovering.</p>
+                                    <p>3D Plots: Ideal for visualizing data in three dimensions.</p>
+                                    <p>Maps: Great for displaying geographical data and trends.</p>
+                                    <p>Subplots: Useful for comparing multiple charts in a single figure.</p>
+                                </div> -->
+                                <div class="category category-1">
+                                    <p class="kota">HTML (HyperText Markup Language)
+
+                                    </p>
+                                    <p class="bachat">The backbone of web content structure.
+                                        Used to create and organize elements like text, images, links, and forms.
+
+                                    </p>
+                                </div>
+                                <div class="category category-2">
+                                    <p class="kota">CSS</p>
+                                    <p class="bachat">Adds design and layout to HTML.
+                                        Enables styling through colors, fonts, spacing, and responsive designs.
+                                    </p>
+                                </div>
+                                <div class="category category-3">
+                                    <p class="kota">Javascript</p>
+                                    <p class="bachat">A scripting language for interactive web elements.
+                                        Enables dynamic behavior like animations, form validation, and API calls.
+                                    </p>
+                                </div>
+                                <!-- <div class="category category-2"></div>
+                                <div class="category category-3"></div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="visualization-intro">
+                    <div class="viz-img">
+                        <img src="{% static 'imgs/analytics.png' %}" alt="" class="img-viz">
+                    </div>
+                    <div class="viz-info-like">
+                        <div class="upper-viz">
+                            <p>Backend Infrastructure</p>
+                        </div>
+                        <div class="lower-viz">
+                            <div class="plots">
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                                <div class="plots-imgs plot-gra"></div>
+                            </div>
+                            <div class="viz-tools" style="color: white;">
+                                <!-- <div class="category-1">
+                                    <p>Matplotlib</p>
+                                    <p>Line Charts: Ideal for visualizing data trends over time.</p>
+                                    <p>Bar Charts: Useful for comparing different categories or groups.</p>
+                                    <p>Histograms: Great for displaying the distribution of a dataset.</p>
+                                    <p>Scatter Plots: Perfect for showing relationships between two variables.</p>
+                                </div>
+                                <div class="category-2">
+                                    <p>Seaborn</p>
+                                    <p>Heatmaps: Effective for visualizing correlations between variables.</p>
+                                    <p>Box Plots: Useful for showing the distribution of data based on quartiles.</p>
+                                    <p>Violin Plots: Combines box plot and kernel density plot to show data
+                                        distribution.</p>
+                                    <p>Pair Plots: Provides a matrix of scatter plots to visualize relationships between
+                                        multiple variables.</p>
+                                </div>
+                                <div class="category-3">
+                                    <p>Plotly</p>
+                                    <p>Interactive Charts: Allow users to explore data through zooming, panning, and
+                                        hovering.</p>
+                                    <p>3D Plots: Ideal for visualizing data in three dimensions.</p>
+                                    <p>Maps: Great for displaying geographical data and trends.</p>
+                                    <p>Subplots: Useful for comparing multiple charts in a single figure.</p>
+                                </div> -->
+                                <div class="category category-1">
+                                    <p class="kota">Django</p>
+                                    <p class="bachat">Django served as the backbone for our project, providing a
+                                        high-level framework for managing dynamic content, user interactions, and secure
+                                        data handling. </p>
+                                </div>
+                                <div class="category category-2">
+                                    <p class="kota">APIs</p>
+                                    <p class="bachat">Custom APIs were designed to facilitate seamless communication
+                                        between different components, ensuring efficient data flow and scalability.
+                                    </p>
+                                </div>
+                                <div class="category category-3">
+                                    <p class="kota">Database</p>
+                                    <p class="bachat">We integrated robust databases for efficient storage and retrieval
+                                        of data, ensuring optimal performance and data integrity.</p>
+                                </div>
+                                <!-- <div class="category category-2"></div>
+                                <div class="category category-3"></div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+    <div class="benifit-text" style="width: 100%; margin: auto; text-align: center;">
+        <p class="Heading" style="margin: 0; font-size: 5rem; width: 100%; margin: auto; text-align: center;">Our
+            Team</p>
+    </div>
+    <div class="testimonials-guide">
+        <div class="person" style="--color: #782a2b">
+            <div class="containerNew">
+                <div class="conianer-inner">
+                    <div class="circleNew" style="position: relative; overflow: hidden;"></div>
+                    <img src="{%static 'imgs/shree.png'%}" style="width: 470px; height:470px; position: absolute; left: 50%; top: 93%;transform: translate(-50%, -50%); ">
+                </div>
+            </div>
+            <div class="divider"></div>
+            <h1>Shreeharsh</h1>
+            <p>CEO OpenAI</p>
+        </div>
+
+        <div class="person" style="--color: #37375e">
+            <div class="containerNew">
+                <div class="conianer-inner">
+                    <div class="circleNew" style="position: relative; overflow: hidden;"></div>
+                    <img src="{%static 'imgs/ram.png'%}" style="width: 500px; height:500px; position: absolute; left: 50%; top: 85%;transform: translate(-50%, -50%); ">
+                </div>
+            </div>
+            <div class="divider"></div>
+            <h1>Ram Rajurkar</h1>
+            <p>Chairman, VivaVista-AI</p>
+        </div>
+
+        <div class="person" style="--color: #3e6e7c">
+            <div class="containerNew">
+                <div class="conianer-inner">
+                    <div class="circleNew" style="position: relative; overflow: hidden;"></div>
+                    <img src="{%static 'imgs/atharva.png'%}" style="width: 500px; height:500px; position: absolute; left: 50%; top: 100%;transform: translate(-50%, -50%); ">
+                </div>
+            </div>
+            <div class="divider"></div>
+            <h1>Atharva Rahate</h1>
+            <p>CFO, VivaVista-AI</p>
+        </div>
+        <div class="person" style="--color: #3e6e7c">
+            <div class="containerNew">
+                <div class="conianer-inner">
+                    <div class="circleNew" style="position: relative; overflow: hidden;"></div>
+            <img src="{%static 'imgs/shon.png' %}" style="width: 750px; height:750px; position: absolute; left: 50%; top: 100%;transform: translate(-50%, -50%); ">
+                </div>
+            </div>
+            <div class="divider"></div>
+            <h1>Shon Kapate</h1>
+            <p>IYC. VivaVista-AI</p>
+        </div>
+        <div class="person" style="--color: #3e6e7c">
+            <div class="containerNew">
+                <div class="conianer-inner">
+                    <div class="circleNew"style="position: relative; overflow: hidden;"></div>
+                    <img src="{%static 'imgs/tejas.png'%}" style="width: 550px; height:550px; position: absolute; left: 50%; top: 100%;transform: translate(-50%, -50%); ">
+                </div>
+            </div>
+            <div class="divider"></div>
+            <h1>Tejas Lande </h1>
+            <p>President OF America</p>
+        </div>
+
+    </div>
+    <script src="js/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const swiper = new Swiper(".mySwiper", {
+                slidesPerView: 1,
+                grabCursor: true,
+                loop: true,
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+            });
+        });
+    </script>
+    <footer class="footer-area footer--light">
+        <div class="footer-big">
+            <!-- start .container -->
+            <div class="containerN" style=" width: 100%; justify-content: center; align-items: center;">
+                <div class="row"
+                    style="display: flex; width: 100%; justify-content: space-around; align-items: center;">
+                    <div class="col-md-3 col-sm-12">
+                        <div class="footer-widget">
+                            <div class="widget-about">
+                                <img src="http://placehold.it/250x80" alt="" class="img-fluid">
+                                <p>Что если тут написать другой текст на русском языке, для проверки шрифта Rubik </p>
+                                <ul class="contact-details">
+                                    <li>
+                                        <span class="icon-earphones"></span> Call Us:
+                                        <a href="tel:344-755-111">344-755-111</a>
+                                    </li>
+                                    <li>
+                                        <span class="icon-envelope-open"></span>
+                                        <a href="mailto:support@aazztech.com">support@aazztech.com</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Ends: .footer-widget -->
+                    </div>
+                    <!-- end /.col-md-4 -->
+                    <div class="col-md-3 col-sm-4">
+                        <div class="footer-widget">
+                            <div class="footer-menu footer-menu--1">
+                                <h4 class="footer-widget-title">Popular Category</h4>
+                                <ul>
+                                    <li>
+                                        <a href="#">Wordpress</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Plugins</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Joomla Template</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Admin Template</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">HTML Template</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- end /.footer-menu -->
+                        </div>
+                        <!-- Ends: .footer-widget -->
+                    </div>
+                    <!-- end /.col-md-3 -->
+
+                    <div class="col-md-3 col-sm-4">
+                        <div class="footer-widget">
+                            <div class="footer-menu">
+                                <h4 class="footer-widget-title">Our Company</h4>
+                                <ul>
+                                    <li>
+                                        <a href="#">About Us</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">How It Works</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Affiliates</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Testimonials</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Contact Us</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Plan &amp; Pricing</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Blog</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- end /.footer-menu -->
+                        </div>
+                        <!-- Ends: .footer-widget -->
+                    </div>
+                    <!-- end /.col-lg-3 -->
+
+                    <div class="col-md-3 col-sm-4">
+                        <div class="footer-widget">
+                            <div class="footer-menu no-padding">
+                                <h4 class="footer-widget-title">Help Support</h4>
+                                <ul>
+                                    <li>
+                                        <a href="#">Support Forum</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Terms &amp; Conditions</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Support Policy</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Refund Policy</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">FAQs</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Buyers Faq</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Sellers Faq</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- end /.footer-menu -->
+                        </div>
+                        <!-- Ends: .footer-widget -->
+                    </div>
+                    <!-- Ends: .col-lg-3 -->
+
+                </div>
+                <!-- end /.row -->
+            </div>
+            <!-- end /.container -->
+        </div>
+        <!-- end /.footer-big -->
+
+        <div class="mini-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="copyright-text">
+                            <p>© 2018
+                                <a href="#">DigiPro</a>. All rights reserved. Created by
+                                <a href="#">AazzTech</a>
+                            </p>
+                        </div>
+
+                        <div class="go_top">
+                            <span class="icon-arrow-up"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

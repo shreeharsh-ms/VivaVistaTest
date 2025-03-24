@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talking Head - Flask Integration</title>
+    <script>
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js/+esm",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/",
+                "talkinghead": "https://cdn.jsdelivr.net/gh/met4citizen/TalkingHead@1.2/modules/talkinghead.mjs"
+            }
+        }
+    </script>
+    <script type="module">
+        import { TalkingHead } from "talkinghead";
+
+        let head;
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            const nodeAvatar = document.getElementById('avatar');
+            const nodeLoading = document.getElementById('loading');
+
+            // Initialize TalkingHead
+            head = new TalkingHead(nodeAvatar, {
+                ttsEndpoint: "http://127.0.0.1:5000/talking_head",
+                ttsApikey: null,
+                lipsyncModules: ["en"],
+                cameraView: "upper"
+            });
+
+            // Load avatar
+            try {
+                nodeLoading.textContent = "Loading...";
+                await head.showAvatar({
+                    url: 'https://models.readyplayer.me/64bfa15f0e72c63d7c3934a6.glb?morphTargets=ARKit,Oculus+Visemes,mouthOpen,mouthSmile,eyesClosed,eyesLookUp,eyesLookDown&textureSizeLimit=1024&textureFormat=png',
+                    body: 'F',
+                    avatarMood: 'neutral',
+                    ttsLang: "en-GB",
+                    ttsVoice: "custom",
+                    lipsyncLang: 'en'
+                }, (ev) => {
+                    if (ev.lengthComputable) {
+                        let val = Math.min(100, Math.round(ev.loaded / ev.total * 100));
+                        nodeLoading.textContent = "Loading " + val + "%";
+                    }
+                });
+                nodeLoading.style.display = 'none';
+            } catch (error) {
+                console.error(error);
+                nodeLoading.textContent = error.toString();
+            }
+
+            // Handle Speak button click
+            const nodeSpeak = document.getElementById('speak');
+            nodeSpeak.addEventListener('click', async function () {
+                const text = document.getElementById('text').value.trim();
+
+                if (!text) {
+                    alert("Please enter text to speak.");
+                    return;
+                }
+
+                try {
+                    // Send text to Flask API
+                    const response = await fetch("http://127.0.0.1:5000/talking_head", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ text: text })
+                    });
+
+                    if (response.ok) {
+                        // Play audio and sync lips
+                        const audioBlob = await response.blob();
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        const audio = new Audio(audioUrl);
+                        audio.play();
+
+                        // Synchronize lipsync
+                        head.speakAudio(audio);
+                    } else {
+                        console.error("Failed to fetch audio:", await response.text());
+                    }
+                } catch (error) {
+                    console.error("Error in Speak functionality:", error);
+                }
+            });
+        });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #avatar {
+            width: 500px;
+            height: 500px;
+            margin: auto;
+        }
+        #controls {
+            margin-top: 20px;
+        }
+        #loading {
+            margin: 10px;
+            font-size: 18px;
+            color: blue;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Talking Head with Flask TTS</h1>
+    <div id="avatar"></div>
+    <p id="loading">Loading avatar...</p>
+
+    <div id="controls">
+        <input type="text" id="text" placeholder="Enter text to speak">
+        <button id="speak" class="btn-change">Speak Question <i class="fas fa-arrow-right"></i></button>
+    </div>
+</body>
+</html>

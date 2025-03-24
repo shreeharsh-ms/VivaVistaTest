@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VivaVista</title>
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Reset default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: #002d72;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.logo h1 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 30px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #ff8c00;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.content h2 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.content p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 40px;
+    line-height: 1.6;
+    max-width: 600px;
+}
+
+.buttons {
+    display: flex;
+    gap: 30px;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+.button-group {
+    text-align: center;
+}
+
+.button-group h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.btn {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 30px;
+    margin: 10px 0;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.user-login-btn, .host-login-btn {
+    background-color: #ff8c00;
+    color: white;
+    border: 2px solid transparent;
+}
+
+.user-login-btn:hover, .host-login-btn:hover {
+    background-color: white;
+    color: #ff8c00;
+    border-color: #ff8c00;
+}
+
+.user-signup-btn, .host-signup-btn {
+    background-color: #003c9b;
+    color: white;
+    border: 2px solid transparent;
+}
+
+.user-signup-btn:hover, .host-signup-btn:hover {
+    background-color: white;
+    color: #003c9b;
+    border-color: #003c9b;
+}
+
+footer {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #002d72;
+    color: white;
+    font-size: 1rem;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .buttons {
+        flex-direction: column;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="landing-page">
+        <header>
+            <div class="logo">
+                <h1>VivaVista</h1>
+            </div>
+            <nav>
+                <a href="#about">About</a>
+                <a href="#features">Features</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </header>
+        
+        <main>
+            <div class="content">
+                <h2>Welcome to VivaVista</h2>
+                <p>Streamline your viva management. Effortless scheduling, hosting, and managing vivas all in one place.</p>
+                
+                <div class="buttons">
+                    <div class="button-group">
+                        <h3>Login</h3>
+                        <a href="/accounts/login" class="btn user-login-btn">Login as User</a>
+                        <a href="/hosts_login" class="btn host-login-btn">Login as Host</a>
+                    </div>
+                    <div class="button-group">
+                        <h3>Sign Up</h3>
+                        <a href="/std_login" class="btn user-signup-btn">Sign Up as User</a>
+                        <a href="/host_login" class="btn host-signup-btn">Sign Up as Host</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 VivaVista. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

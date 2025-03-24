@@ -1,0 +1,73 @@
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/STDlogin.css' %}">
+    <script src="{% static 'js/STDlogin.js' %}"></script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <div class="top-right">
+        <button class="btn profile-btn"><i class='bx bx-arrow-back'></i></button>
+        <button class="btn logout-btn"><i class='bx bx-user'></i></button>
+        <button class="btn back-btn"><i class='bx bxs-log-out'></i></button>
+    </div>
+    <div class="containerr">
+        <div class="form-box">
+            <h2>Login</h2>
+            <form action="/host_login/" method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" id="name"name="name" required>
+                    <label for="name">Full Name</label>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="er-number" name="host-name" required>
+                    <label for="er-number">Username</label>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="institute-number" name="institute-number" >
+                    <label for="institute-number">Institute Number</label>
+                </div>
+
+                <button type="submit" class="next-btn">Next</button>
+            </form>
+        </div>
+        <div class="info-holder-opt">
+            <div class="carousel-container">
+                <div class="carousel">
+                    <div class="slide fade">
+                        <img src=""
+                            alt="Image 1">
+                    </div>
+                    <div class="slide fade">
+                        <img src=""
+                            alt="Image 2">
+                    </div>
+                    <div class="slide fade">
+                        <img src=""
+                            alt="Image 3">
+                    </div>
+                </div>
+
+                <!-- Dots for navigation -->
+                <div class="dots">
+                    <span class="dot" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

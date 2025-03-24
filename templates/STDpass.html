@@ -1,0 +1,298 @@
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/STDlogin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/STDconf.css' %}">
+    <link rel="stylesheet" href="{% static 'css/STDpass.css' %}">
+    <script src="{% static 'js/STDconf.js' %}"></script>
+    <script src="{% static 'js/STDpass.js' %}"></script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Document</title>
+    
+</head>
+
+<body>
+    <div class="top-right">
+        <button class="btn profile-btn"><i class='bx bx-arrow-back'></i></button>
+        <button class="btn logout-btn"><i class='bx bx-user'></i></button>
+        <button class="btn back-btn"><i class='bx bxs-log-out'></i></button>
+    </div>
+    <div class="containerr">
+        <div class="info-holder-opt">
+            <div class="carousel-container">
+                <div class="carousel">
+                    <div class="slide fade">
+                        <img src="https://th.bing.com/th/id/OIP.j7s1J9kRVQMGK35Q9Xem_gHaJQ?w=1080&h=1350&rs=1&pid=ImgDetMain"
+                            alt="Image 1">
+                    </div>
+                    <div class="slide fade">
+                        <img src="https://theindianwire.com/wp-content/uploads/2019/09/Mrunal-Thakur3.jpg"
+                            alt="Image 2">
+                    </div>
+                    <div class="slide fade">
+                        <img src="https://1.bp.blogspot.com/-qC7aOQ9vnHw/X505BE5ujPI/AAAAAAAADPA/c7oHql57Ur0p2lDfVvDFz2jOpA0-tgZyACLcBGAsYHQ/s1350/117700286_1472153619647846_1103019288650966717_n.jpg"
+                            alt="Image 3">
+                    </div>
+                </div>
+
+                <!-- Dots for navigation -->
+                <div class="dots">
+                    <span class="dot" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-box">
+            <h2>Create Account</h2>
+            <form action="/std_pass/" method="POST" id="password-form">
+                {% csrf_token %}
+                <!-- Password Creation -->
+                <div class="input-group">
+                    <input type="password" id="create-password" name="password" required>
+                    <label for="create-password">Create Password</label>
+                </div>
+            
+                <!-- Confirm Password -->
+                <div class="input-group">
+                    <input type="password" id="confirm-password" name="confirm-password" required>
+                    <label for="confirm-password">Confirm Password</label>
+                </div>
+            
+                <!-- Add Email with Plus Button -->
+                <div class="email-section">
+                    <div class="add-email" id="add-email">
+                        <span class="email-label">Add Gmail</span>
+                        <button type="button" class="add-email-btn" id="add-email-btn">+</button>
+                    </div>
+            
+                    <!-- Sliding Email Window -->
+                    <div class="email-window" id="email-window" style="display: none;">
+                        <div class="input-group">
+                            <input type="email" id="email-input" name="email" placeholder="Enter your email" required>
+                            <label for="email-input">Email</label>
+                        </div>
+            
+                        <!-- Send OTP Button -->
+                        <button type="button" class="send-otp-btn" id="send-otp-btn">Send OTP</button>
+            
+                        <!-- OTP Input Boxes -->
+                        <div class="otp-section" id="otp-section" style="display: none;">
+                            <input type="text" maxlength="1" class="otp-box" id="otp-1" required>
+                            <input type="text" maxlength="1" class="otp-box" id="otp-2" required>
+                            <input type="text" maxlength="1" class="otp-box" id="otp-3" required>
+                            <input type="text" maxlength="1" class="otp-box" id="otp-4" required>
+                        </div>
+            
+                        <!-- Verify Button -->
+                        <button type="button" class="done-btn" id="done-btn" style="display: none;">Verify</button>
+                    </div>
+                </div>
+            
+                <!-- Final Login Button -->
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+            
+        </div>
+    </div>
+    <script>
+
+document.addEventListener('DOMContentLoaded', () => {
+    const emailBtn = document.getElementById('add-email-btn');
+    const emailWindow = document.getElementById('email-window');
+    const sendOtpBtn = document.getElementById('send-otp-btn');
+    const otpSection = document.getElementById('otp-section');
+    const doneBtn = document.getElementById('done-btn');
+    const otpInputs = document.querySelectorAll('.otp-box');
+
+    // Show email input when "+" is clicked
+    emailBtn.addEventListener('click', () => {
+        emailWindow.style.display = 'block';
+    });
+
+    // Handle OTP sending
+    sendOtpBtn.addEventListener('click', () => {
+        const email = document.getElementById('email-input').value;
+        if (!email) {
+            alert('Please enter a valid email.');
+            return;
+        }
+        
+        // Send OTP request to backend
+        fetch('/send_otp/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+            body: JSON.stringify({ email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(data.message);
+                otpSection.style.display = 'flex';
+                doneBtn.style.display = 'inline-block';
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error sending OTP:', error));
+    });
+
+    // Auto-focus OTP input
+    otpInputs.forEach((input, index) => {
+        input.addEventListener('input', () => {
+            if (input.value.length === 1 && index < otpInputs.length - 1) {
+                otpInputs[index + 1].focus();
+            }
+        });
+    });
+    confirm.log(user_id)
+    // Handle OTP verification
+    doneBtn.addEventListener('click', () => {
+        const otp = Array.from(otpInputs).map(input => input.value).join('');
+        const email = document.getElementById('email-input').value;
+
+        fetch('/verify_otp/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+            body: JSON.stringify({ email, otp })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(data.message);
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error verifying OTP:', error));
+    });
+});
+
+    //     document.getElementById('send-otp-btn').addEventListener('click', async function () {
+    //         const email = document.getElementById('email-input').value; // Get the email input value
+    //         console.log(email)
+    
+    //         if (!email) {
+    //             alert('Please enter an email address.');
+    //             return;
+    //         }
+    
+    //         try {
+    //             const response = await fetch('/send_otp/', {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'Content-Type': 'application/json', // Ensure the server expects JSON
+    //                     'X-CSRFToken': '{{ csrf_token }}', // Django requires CSRF tokens for POST requests
+    //                 },
+    //                 body: JSON.stringify({ email: email }),
+    //             });
+    
+    //             const result = await response.json();
+    //             if (result.status === 'success') {
+    //                 alert('OTP sent successfully!');
+    //             } else {
+    //                 alert(result.message || 'Failed to send OTP.');
+    //             }
+    //         } catch (error) {
+    //             console.error('Error sending OTP:', error);
+    //             alert('An error occurred. Please try again.');
+    //         }
+    //     });
+    
+    //     document.getElementById('done-btn').addEventListener('click', async function () {
+    //     // Get OTP from individual input boxes
+    //     const otp1 = document.getElementById('otp-1').value;
+    //     const otp2 = document.getElementById('otp-2').value;
+    //     const otp3 = document.getElementById('otp-3').value;
+    //     const otp4 = document.getElementById('otp-4').value;
+    
+    //     const otp = otp1 + otp2 + otp3 + otp4; // Combine OTP digits
+    //     console.log(otp)
+    
+    //     if (otp.length !== 4 || isNaN(otp)) {
+    //         alert('Please enter a valid 4-digit OTP.');
+    //         return;
+    //     }
+    
+    //     try {
+    //         // Send OTP to the backend for verification
+    //         const response = await fetch('/verify_otp/', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'X-CSRFToken': '{{ csrf_token }}', // Include CSRF token for security
+    //             },
+    //             body: JSON.stringify({ otp: otp }),
+    //         });
+    
+    //         const result = await response.json();
+    
+    //         if (result.status === 'success') {
+    //             alert('OTP verified successfully!');
+    //             // Redirect or perform next action
+    //         } else {
+    //             alert(result.message || 'OTP verification failed. Please try again.');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error verifying OTP:', error);
+    //         alert('An error occurred. Please try again.');
+    //     }
+    // });
+    
+    
+//     document.getElementById('done-btn').addEventListener('click', async function () {
+//     const password = document.getElementById('create-password').value;
+//     const confirmPassword = document.getElementById('confirm-password').value;
+//     const email = document.getElementById('email-input').value;
+
+//     const otp1 = document.getElementById('otp-1').value;
+//     const otp2 = document.getElementById('otp-2').value;
+//     const otp3 = document.getElementById('otp-3').value;
+//     const otp4 = document.getElementById('otp-4').value;
+//     const otp = otp1 + otp2 + otp3 + otp4;
+//         console.log(otp)
+//     // Ensure all fields are included
+//     if (!password || !confirmPassword || !email || otp.length !== 4) {
+//         alert("All fields are required.");
+//         return;
+//     }
+
+//     try {
+//         const response = await fetch('/std_pass/', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'X-CSRFToken': '{{ csrf_token }}', // Include CSRF token for security
+//             },
+//             body: JSON.stringify({
+//                 password: password,
+//                 confirm_password: confirmPassword,
+//                 email: email,
+//                 otp: otp,
+//             }),
+//         });
+
+//         const result = await response.json();
+//         alert(result.message || "An error occurred.");
+//     } catch (error) {
+//         console.error("Error:", error);
+//         alert("An unexpected error occurred.");
+//     }
+// });
+
+    </script>
+</body>
+
+</html>

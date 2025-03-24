@@ -1,0 +1,217 @@
+body {
+    font-family: 'Alatsi', sans-serif;
+    margin: 0;
+    overflow: hidden;
+    background-color: black;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.title {
+    font-size: 10vw;
+    color: white;
+}
+
+canvas {
+    width: 100%;
+}
+
+.containerr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1000px;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.form-box {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.2);
+    min-width: 51%;
+    text-align: center;
+    height: 440px;
+}
+
+.info-holder-opt {
+    background-color: rgb(174, 203, 247);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.2);
+    min-width: 48%;
+    text-align: center;
+    height: 440px;
+    position: relative;
+}
+
+
+.form-box h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 10px;
+    font-size: 1em;
+    color: #333;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #9D50BB;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus,
+.input-group input:valid {
+    border-bottom-color: #6E48AA;
+}
+
+.input-group label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 1em;
+    color: #999;
+    pointer-events: none;
+    transition: all 0.3s;
+}
+
+.input-group input:focus~label,
+.input-group input:valid~label {
+    top: -20px;
+    left: 0;
+    font-size: 0.9em;
+    color: #6E48AA;
+}
+
+.dots {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.next-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #9D50BB, #6E48AA);
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1em;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 100%;
+}
+
+.next-btn:hover {
+    background: linear-gradient(135deg, #6E48AA, #9D50BB);
+}
+
+@media (max-width: 500px) {
+    .form-box {
+        padding: 30px;
+    }
+
+    .input-group input {
+        padding: 8px 10px;
+    }
+
+    .next-btn {
+        padding: 10px 20px;
+    }
+}
+
+.carousel-container {
+    position: relative;
+    width: 120%;
+    height: 120%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    object-fit: cover;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+
+.carousel img {
+    width: 100%;
+    border-radius: 15px;
+}
+
+/* Hide all slides initially */
+.slide {
+    display: none;
+}
+
+/* Fading animation */
+.fade {
+    animation: fadeEffect 1s ease;
+}
+
+@keyframes fadeEffect {
+    from {
+        opacity: 0.4;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Dots */
+.dots {
+    text-align: center;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 0 0 15px 15px;
+}
+
+.dot {
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.dot:hover,
+.active {
+    background-color: #333;
+}

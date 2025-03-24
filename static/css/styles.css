@@ -1,0 +1,874 @@
+body {
+    font-family: Arial, sans-serif;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+}
+
+.super-back {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    opacity: 0.5;
+    z-index: -1;
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+    height: 100%;
+}
+
+.navigation {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    border-radius: 20px;
+    color: white;
+}
+
+.logo {
+    width: 20%;
+}
+
+.nav-items {
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+
+}
+
+.nav-items nav {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-items nav ul {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.nav-items nav ul li {
+    list-style: none;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.nav-items nav ul li a {
+    color: aliceblue;
+    text-decoration: none;
+    font-weight: 100 !important;
+}
+
+
+
+.btn-nav {
+    width: 125px;
+    height: 25px;
+    padding: 10px;
+    background: rgb(2, 0, 36);
+    background: linear-gradient(90deg, rgba(121, 9, 105, 1) 35%, rgba(0, 171, 255, 1) 100%);
+    text-align: center;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sign-in {
+    background: linear-gradient(90deg, rgb(77, 77, 77), rgb(56, 56, 56));
+}
+
+.main-liner {
+    width: 100%;
+    height: 700px;
+    /* background-color: black; */
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.info-container {
+    width: 45%;
+}
+
+.img-container {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.img-holder {
+    width: 80%;
+    height: 80%;
+    border-radius: 30% 70% 43% 57% / 30% 35% 65% 70%;
+    background: linear-gradient(90deg, rgba(121, 9, 104, 0.221) 35%, rgba(0, 170, 255, 0.248) 100%);
+    backdrop-filter: blur(8px);
+    object-fit: cover;
+}
+
+.imger {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.slid1 {
+    height: 150px;
+    width: 250px;
+
+
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    position: absolute;
+    top: 200px;
+    left: 0;
+}
+
+.slid2 {
+    height: 100px;
+    width: 380px;
+    background-color: aquamarine;
+    position: absolute;
+    position: absolute;
+    right: 0;
+    top: 40px;
+    background-color: rgba(229, 44, 246, 0.145);
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+}
+
+.slid3 {
+    height: 300px;
+    width: 350px;
+    background-color: rgba(127, 255, 212, 0.145);
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+    position: absolute;
+    right: 30px;
+    bottom: 50px;
+}
+
+.slid4 {
+    height: 130px;
+    width: 130px;
+    background-color: rgba(127, 255, 212, 0.145);
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+    position: absolute;
+    top: 30px;
+    left: 30px;
+}
+
+.someFrame {
+    transition: 0.5s ease;
+}
+
+.someFrame:hover {
+    background-color: #6be1ff;
+    /* Hover color */
+    transform: scale(1.1);
+    transition: 0.5s ease;
+
+    /* Slight increase in size */
+}
+
+.topper {
+    font-size: 1.2rem;
+    color: rgb(174, 7, 141);
+    font-weight: 300;
+}
+
+.Heading {
+    font-size: 5rem;
+    font-family: 'Times New Roman', Times, serif;
+    /* color: rgb(7, 96, 174); */
+    font-weight: 800;
+    background-image: linear-gradient(90deg, rgb(129, 42, 223) 35%, rgb(160, 42, 181) 40%);
+    /* Define your gradient colors */
+    -webkit-background-clip: text;
+    /* Clip the background to the text */
+    background-clip: text;
+    color: transparent;
+    margin-top: -10px;
+    overflow: visible !important;
+
+}
+
+.sub-heading {
+    font-size: 5rem;
+    font-weight: 800;
+    font-family: 'Times New Roman', Times, serif;
+    background-image: linear-gradient(90deg, rgb(129, 42, 223) 35%, rgb(160, 42, 181) 40%);
+    /* Define your gradient colors */
+    -webkit-background-clip: text;
+    /* Clip the background to the text */
+    background-clip: text;
+    color: transparent;
+    margin-top: -80px;
+    overflow: visible !important;
+
+}
+
+.info-container {
+    /* line-height: 20px; */
+}
+
+.description {
+    font-size: 0.95rem;
+    font-weight: lighter;
+    color: rgb(147, 145, 145);
+    width: 70%;
+    margin-top: -50px;
+    background-color: rgba(239, 133, 234, 0.201);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 20px;
+    line-height: 20px;
+}
+
+.boxes {
+    width: 75%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.box-1 {
+    width: 48%;
+    border-radius: 20px;
+    background-color: rgba(135, 229, 135, 0.248);
+    backdrop-filter: blur(8px);
+    height: 150px;
+}
+
+.box-2 {
+    width: 48%;
+    border-radius: 20px;
+    background-color: rgba(69, 61, 215, 0.267);
+    backdrop-filter: blur(8px);
+    height: 150px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+.mandel {
+    font-family: "Rajdhani", sans-serif;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size: 1.5rem;
+    font-weight: 100;
+    color: gray;
+}
+
+.tools {
+    width: 95%;
+    max-height: 60%;
+    height: 60%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: -10px;
+}
+
+.tool1 {
+    height: 40px;
+    width: 48%;
+    background-color: rgba(199, 199, 199, 0.726);
+    border-radius: 5px;
+    margin-top: 3px;
+    transition: 1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    position: relative;
+}
+
+.tool1:hover .hider {
+    width: 100%;
+    position: absolute;
+    height: 200%;
+    background-color: rgb(255, 255, 255);
+    transition: 1s ease;
+
+}
+
+.tool1 .hider {
+    width: 100%;
+    position: absolute;
+    height: 0%;
+    transition: 1s ease;
+    bottom: 0;
+    left: 0;
+}
+
+.tool1 p {
+    font-size: 0.8rem;
+    margin-right: 10px;
+}
+
+.pic-myself {
+    width: 40%;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.short-info {
+    width: 55%;
+    height: 90px;
+}
+
+.round {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 4px solid rgb(255, 255, 255);
+    background-color: antiquewhite;
+    object-fit: cover;
+}
+
+.name-profile {
+    color: white;
+    font-size: 1rem;
+    font-family: 'Times New Roman', Times, serif;
+    margin-top: 4px;
+}
+
+.btn-click {
+    width: 100%;
+    height: 35px;
+    margin: auto;
+    border-radius: 2px;
+    background: linear-gradient(90deg, rgba(121, 9, 105, 1) 35%, rgba(0, 171, 255, 1) 100%);
+    border: none;
+    color: white;
+    margin-top: -10px;
+}
+
+.logo-icon {
+    font-size: 2rem;
+}
+
+.lara {
+    width: 100%;
+    height: 850px;
+    backdrop-filter: blur(8px);
+}
+
+.benifit-text {
+    width: 100%;
+    height: auto;
+    max-height: 20%;
+    display: flex;
+}
+
+.main-info {
+    margin-top: 30px;
+    height: 80%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.sidebar-middle {
+    width: 35%;
+    height: 100%;
+}
+
+.info-ben {
+    height: 23%;
+    width: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, rgba(121, 9, 104, 0.221) 35%, rgba(0, 170, 255, 0.248) 100%);
+    backdrop-filter: blur(8px);
+    margin-top: 12px;
+    margin-bottom: 12px;
+    display: flex;
+}
+
+
+
+.info-ben {
+    transition: 0.5s ease;
+
+}
+
+.info-ben:hover {
+    transform: scale(1.01);
+    transition: 0.5s ease;
+    background: linear-gradient(90deg, rgba(0, 170, 255, 0.248) 35%, rgba(121, 9, 104, 0.221) 100%);
+    cursor: pointer;
+
+}
+
+.number {
+    width: 25%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.number-d {
+    font-size: 5rem;
+    color: white;
+}
+
+.info-benifit {
+    width: 63%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    position: relative;
+}
+
+.card-info {
+    width: 48%;
+    height: 48%;
+    background-color: rgba(53, 200, 151, 0.308);
+    border-radius: 20px;
+}
+
+.circle-change {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-60%, -60%);
+    border: 20px solid black;
+    /* background: linear-gradient(0deg, rgba(121, 9, 104, 0.275) 35%, rgba(0, 171, 255, 1) 100%); */
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.circle-change:hover .arrow-cricle {
+    transform: rotate(30deg);
+    transition: 0.5s ease;
+    /* Arrow tilts slightly */
+}
+
+.arrow-cricle {
+    font-size: 5rem;
+    color: white;
+    transition: 0.5s ease;
+
+}
+
+.number::after {
+    content: '';
+    width: 8px;
+    height: 70%;
+    background: linear-gradient(0deg, rgba(121, 9, 104, 0.596) 35%, rgba(0, 170, 255, 0.248) 100%);
+
+    margin-right: -20px;
+    border-radius: 20px;
+    margin-left: 20px;
+}
+
+.card-head {
+    width: 90%;
+    margin: auto;
+    font-size: 1.5rem;
+    color: rgb(255, 255, 255);
+    margin-top: 30px;
+
+}
+
+.text-inside-card {
+    width: 90%;
+    margin: auto;
+    font-size: 1.1rem;
+    color: rgb(135, 134, 134);
+    margin-top: 10px;
+}
+
+.trendi {
+    margin-top: 4px;
+    font-size: 1.5rem;
+    margin-bottom: -15px;
+    color: rgb(199, 199, 202);
+}
+
+.heading-ben {
+    width: 74%;
+    height: 100%;
+    line-height: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.trindi-bor {
+    font-size: 1rem;
+    color: rgb(134, 194, 174);
+}
+
+.tools-info {
+    width: 100%;
+    min-height: 1800px;
+    max-height: 36s01px;
+    margin-top: 100px;
+}
+
+.tools-container {
+    width: 100%;
+    height: 80%;
+
+}
+
+.img-pic {
+    width: 90%;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: -20px;
+}
+
+.alter-img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+}
+
+.tools-container {
+    width: 100%;
+    min-height: 120%;
+
+}
+
+.visualization-intro {
+    width: 100%;
+    height: 22%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.viz-img {
+    width: 40%;
+    height: 100%;
+}
+
+.img-viz {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.viz-info-like {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upper-viz {
+    width: 90%;
+    height: 14%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 2rem;
+    color: white;
+    position: relative;
+}
+
+.upper-viz::before {
+    content: '';
+    width: 10px;
+    height: 80%;
+    background: linear-gradient(0deg, rgba(121, 9, 104, 0.596) 35%, rgba(0, 170, 255, 0.248) 100%);
+    position: absolute;
+    left: 0;
+}
+
+.lower-viz {
+    width: 90%;
+    margin: auto;
+    height: 84%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.plots {
+    width: 40%;
+    min-height: 120%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.viz-tools {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.upper-viz p {
+    margin-left: 20px;
+}
+
+.category {
+    line-height: 8px;
+    width: 90%;
+    margin: auto;
+    height: 100px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.kota {
+    margin-top: 0px;
+    font-size: 1.3rem;
+}
+
+.bachat {
+    height: auto;
+    line-height: 18px;
+    margin-top: -5px;
+}
+
+.plot-gra {
+    width: 48%;
+    height: 80px;
+    background-color: rgba(127, 255, 212, 0.215);
+    border-radius: 20px;
+    margin-top: -4px;
+    margin-bottom: -4px;
+}
+
+.testimonials-guide {
+    width: 100%;
+    margin-bottom: 500px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    margin: 0;
+    font-family: "Merriweather";
+    border-radius: 50px;
+    background-color: aquamarine;
+    background-color: rgb(225, 225, 225);
+    border-radius: 0px;
+    backdrop-filter: blur(8px);
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@900&family=Sumana:wght@700&display=swap");
+
+.person {
+    /* border: 1px solid; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 250px;
+}
+
+.containerNew {
+    height: 312px;
+    width: 400px;
+    cursor: pointer;
+    transform: scale(0.48);
+    transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.circleNew {
+    position: absolute;
+    background: var(--color);
+    height: 380px;
+    width: 380px;
+    top: 210px;
+    left: 10px;
+    border-radius: 50%;
+}
+
+.person img {
+    position: relative;
+    width: 340px;
+    top: 164px;
+    left: 22px;
+    transform: translateY(20px) scale(1.15);
+    transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.conianer-inner {
+    position: relative;
+    clip-path: path("M 390,400 C 390,504.9341 304.9341,590 200,590 95.065898,590 10,504.9341 10,400 V 10 H 200 390 Z");
+    top: -200px;
+}
+
+.divider {
+    height: 3px;
+    width: 130px;
+    border-radius: 5px;
+    background: var(--color);
+}
+
+.person h1 {
+    color: #464646;
+    margin: 16px 0 0 0;
+}
+
+.person p {
+    font-family: arial;
+    color: #6e6e6e;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* hover */
+.containerNew:hover {
+    transform: scale(0.54);
+}
+
+.containerNew:hover img {
+    transform: translateY(0) scale(1.3);
+}
+
+.faculty-cradits {
+    background-color: rgb(214, 213, 213);
+
+
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+
+.containerNe2w {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.testimonial {
+    position: relative;
+    max-width: 900px;
+    width: 100%;
+    padding: 50px 0;
+    overflow: hidden;
+}
+
+.testimonial .image {
+    height: 170px;
+    width: 170px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.testimonial .slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    row-gap: 30px;
+    height: 100%;
+    width: 100%;
+}
+
+.slide p {
+    text-align: center;
+    padding: 0 160px;
+    font-size: 18px;
+    font-weight: 400;
+    color: #4a4a4a;
+}
+
+.slide .quote-icon {
+    font-size: 30px;
+    color: #4070f4;
+}
+
+.slide .details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.details .name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fdfcfc;
+}
+
+.details .job {
+    font-size: 12px;
+    font-weight: 400;
+    color: #333;
+}
+
+/* Swiper navigation buttons */
+.nav-btn {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    transform: translateY(30px);
+    background-color: rgba(0, 0, 0, 0.1);
+    transition: 0.2s;
+}
+
+.nav-btn:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.nav-btn::after,
+.nav-btn::before {
+    font-size: 20px;
+    color: #fff;
+}
+
+.swiper-pagination-bullet {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.swiper-pagination-bullet-active {
+    background-color: #4070f4;
+}
+
+@media screen and (max-width: 768px) {
+    .slide p {
+        padding: 0 20px;
+    }
+
+    .nav-btn {
+        display: none;
+    }
+}

@@ -1,0 +1,95 @@
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/STDlogin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/STDconf.css' %}">
+    <script src="{% static 'js/STDconf.js' %}"></script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>{{user_data}}</h1>
+    <div class="top-right">
+        <button class="btn profile-btn"><i class='bx bx-arrow-back'></i></button>
+        <button class="btn logout-btn"><i class='bx bx-user'></i></button>
+        <button class="btn back-btn"><i class='bx bxs-log-out'></i></button>
+    </div>
+    <div class="containerr">
+        <div class="info-holder-opt">
+            <div class="carousel-container">
+                <div class="carousel">
+                    <div class="slide fade">
+                        <img src="https://th.bing.com/th/id/OIP.j7s1J9kRVQMGK35Q9Xem_gHaJQ?w=1080&h=1350&rs=1&pid=ImgDetMain"
+                            alt="Image 1">
+                    </div>
+                    <div class="slide fade">
+                        <img src="https://theindianwire.com/wp-content/uploads/2019/09/Mrunal-Thakur3.jpg"
+                            alt="Image 2">
+                    </div>
+                    <div class="slide fade">
+                        <img src="https://1.bp.blogspot.com/-qC7aOQ9vnHw/X505BE5ujPI/AAAAAAAADPA/c7oHql57Ur0p2lDfVvDFz2jOpA0-tgZyACLcBGAsYHQ/s1350/117700286_1472153619647846_1103019288650966717_n.jpg"
+                            alt="Image 3">
+                    </div>
+                </div>
+
+                <!-- Dots for navigation -->
+                <div class="dots">
+                    <span class="dot" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-box">
+            <h2>Select Details</h2>
+            <form action="/std_conf/" method="POST">
+                {% csrf_token %}
+                <!-- College Selection -->
+                <div class="input-group">
+                    <input type="text" id="college-search" list="college-name" name="college-name">
+                    <label for="college-search">College Name</label>
+                    <datalist id="college-options">
+                        <option value="Institute A">
+                        <option value="Institute B">
+                        <option value="Institute C">
+                        <option value="Institute D">
+                    </datalist>
+                </div>
+
+                <!-- Branch Selection -->
+                <div class="input-group">
+                    <select id="branch-select" name="branch" required>
+                        <option value="" disabled selected>Select Branch</option>
+                        <option value="CSE">Computer Science & Engineering</option>
+                        <option value="ECE">Electronics & Communication Engineering</option>
+                        <option value="ME">Mechanical Engineering</option>
+                        <option value="CE">Civil Engineering</option>
+                    </select>
+                    <label for="branch-select">Branch</label>
+                </div>
+
+                <!-- Year Selection -->
+                <div class="input-group">
+                    <select id="year-select" name="year" required>
+                        <option value="" disabled selected>Select Year</option>
+                        <option value="1st">1st Year</option>
+                        <option value="2nd">2nd Year</option>
+                        <option value="3rd">3rd Year</option>
+                        <option value="4th">4th Year</option>
+                    </select>
+                    <label for="year-select">Year</label>
+                </div>
+                <button type="submit" class="next-btn">Create Password</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

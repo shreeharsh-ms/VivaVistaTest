@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Management</title>
+    <link rel="stylesheet" href="{% static 'css/Questions.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Question Management</h1>
+        </header>
+
+        <table class="question-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Category</th>
+                    <th>Question</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="question-list">
+                {% for category, questions in questions.items %}
+                <tr>
+                    <td colspan="4" class="category-header">{{ category }}</td>
+                </tr>
+                {% for question in questions %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ category }}</td>
+                    <td>
+                        {% if question.question %}
+                            <strong>{{ question.question }}</strong><br>
+                            <ul>
+                                {% for option in question.options %}
+                                <li>{{ option }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            {{ question }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button class="btn edit">Edit</button>
+                        <button class="btn delete">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% empty %}
+                <tr>
+                    <td colspan="4">No questions available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            
+        </table>
+    </div>
+</body>
+</html>

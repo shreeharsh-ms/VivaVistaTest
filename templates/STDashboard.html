@@ -1,0 +1,619 @@
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{% static 'css/STDashboard.css' %}">
+    <script src="{% static 'js/STDashboard.js' %}"></script>
+    <style>
+        .fileDirectory {
+            min-height: 750px;
+
+        }
+
+        .formJoinClassDisplay {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .containerForm {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 600px;
+            text-align: center;
+            animation: fadeIn 0.6s ease-in-out;
+            height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Form Title */
+        .form-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .form-subtitle {
+            font-size: 1rem;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        /* OTP Container */
+        .otp-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .otp-box {
+            width: 40px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .otp-box:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+            background: #fff;
+        }
+
+        .separator {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            align-self: center;
+        }
+
+        /* Join Button */
+        .join-btn {
+            width: 102%;
+            padding: 12px;
+            font-size: 1rem;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-left: -5px;
+        }
+
+        .join-btn:hover {
+            background: #0056b3;
+        }
+
+        /* Hover Effects */
+        .container:hover {
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-box {
+            text-align: left;
+            margin-top: -10px;
+        }
+
+        #classroomForm {
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="window-bluer-join-class" id="window-bluer-join-class">
+
+    </div>
+    <div class="formJoinClassDisplay" id="formJoinClassDisplay">
+        <div class="containerForm">
+            <div class="form-box">
+                <h1 class="form-title">Join Classroom</h1>
+                <p class="form-subtitle">Enter your classroom code</p>
+                <form id="classroomForm">
+                    {% csrf_token %}
+                    <div class="otp-container">
+                        <!-- 6 boxes for the first part -->
+                        <input type="text" maxlength="1" class="otp-box" id="box1">
+                        <input type="text" maxlength="1" class="otp-box" id="box2">
+                        <input type="text" maxlength="1" class="otp-box" id="box3">
+                        <input type="text" maxlength="1" class="otp-box" id="box4">
+                        <input type="text" maxlength="1" class="otp-box" id="box5">
+                        <input type="text" maxlength="1" class="otp-box" id="box6">
+
+                        <!-- Separator -->
+                        <span class="separator">-</span>
+
+                        <!-- 4 boxes for the second part -->
+                        <input type="text" maxlength="1" class="otp-box" id="box7">
+                        <input type="text" maxlength="1" class="otp-box" id="box8">
+                        <input type="text" maxlength="1" class="otp-box" id="box9">
+                        <input type="text" maxlength="1" class="otp-box" id="box10">
+                    </div>
+                    <button type="submit" class="join-btn">Join Classroom</button>
+                </form>
+
+            </div>
+        </div>
+
+        <script>document.addEventListener("DOMContentLoaded", function () {
+                // Function to handle input and move to the next box
+                function handleInput(index) {
+                    const currentBox = document.getElementById(`box${index}`);
+                    const nextBox = document.getElementById(`box${index + 1}`);
+                    const separator = document.querySelector('.separator');
+
+                    if (currentBox && currentBox.value.length === 1 && nextBox) {
+                        nextBox.focus();
+                    }
+
+                    // Highlight separator when the first part is completed
+                    if (index === 6 && separator) {
+                        separator.classList.add('highlight');
+                    }
+                }
+
+                // Function to handle key navigation
+                function handleKeyDown(event, index) {
+                    const currentBox = document.getElementById(`box${index}`);
+                    const prevBox = document.getElementById(`box${index - 1}`);
+                    const nextBox = document.getElementById(`box${index + 1}`);
+
+                    if (!currentBox) return;
+
+                    if (event.key === 'Backspace' && !currentBox.value && prevBox) {
+                        prevBox.focus();
+                    } else if (event.key === 'ArrowLeft' && prevBox) {
+                        prevBox.focus();
+                    } else if (event.key === 'ArrowRight' && nextBox) {
+                        nextBox.focus();
+                    }
+                }
+
+                // Function to join a classroom
+                function joinClassroom(event) {
+                    event.preventDefault(); // Prevent default form submission
+
+                    // Collect the input values
+                    const code = Array.from({ length: 10 }, (_, i) => {
+                        const box = document.getElementById(`box${i + 1}`);
+                        return box ? box.value.trim() : '';
+                    }).join('');
+
+                    if (code.length !== 10) {
+                        alert('Please enter a complete 10-character classroom code.');
+                        return;
+                    }
+
+                    // Add the separator back in the correct position
+                    const formattedCode = code.slice(0, 6) + '-' + code.slice(6);
+
+                    // Example API call (update this based on your backend)
+                    fetch('/join_classroom/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value, // Django CSRF token
+                        },
+                        body: JSON.stringify({ classroom_code: formattedCode }),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert(data.message || 'Successfully joined the classroom.');
+                                window.location.reload(); // Redirect or refresh after success
+                            } else {
+                                alert(data.message || 'Failed to join the classroom.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred. Please try again later.');
+                        });
+                }
+
+                // Attach event listeners to all OTP input boxes
+                for (let i = 1; i <= 10; i++) {
+                    const box = document.getElementById(`box${i}`);
+                    if (box) {
+                        box.addEventListener('input', () => handleInput(i));
+                        box.addEventListener('keydown', (event) => handleKeyDown(event, i));
+                    }
+                }
+
+                // Attach event listener to the form
+                const form = document.getElementById('classroomForm');
+                if (form) {
+                    form.addEventListener('submit', joinClassroom);
+                } else {
+                    console.error("Form with ID 'classroomForm' not found.");
+                }
+            });
+
+            // Viva Selection Function
+            function sendParameter(subjectName, otherParameter) {
+    fetch('/Viva_selection/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+            parameter_name: subjectName, 
+            another_parameter: otherParameter 
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.redirect_url) {
+            // Redirect to the specified URL
+            window.location.href = data.redirect_url;
+        } else {
+            console.error("Failed to redirect:", data.error || "Unknown error");
+        }
+    })
+    .catch(error => console.error("Request failed:", error));
+}
+
+
+
+
+        </script>
+        <!-- 
+        <script>
+            function moveNext(index) {
+                const nextBox = document.getElementById(`box${index + 1}`);
+                if (nextBox) {
+                    nextBox.focus();
+                }
+            }
+
+            function joinClassroom() {
+                const code = Array.from({ length: 10 }, (_, i) => document.getElementById(`box${i + 1}`).value).join('');
+                alert(`Joining Classroom with Code: ${code}`);
+                return false; // Prevent form submission for demo purposes
+            }
+        </script> -->
+
+        <!-- <script>
+ document.addEventListener("DOMContentLoaded", function () {
+    // Function to handle form submission
+    function joinClassroom(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Collect classroom code with the separator
+        const code = Array.from({ length: 6 }, (_, i) => document.getElementById(`box${i + 1}`).value.trim()).join('') +
+            '-' +
+            Array.from({ length: 4 }, (_, i) => document.getElementById(`box${i + 7}`).value.trim()).join('');
+
+        if (code.length !== 11) { // Validate total length (10 digits + 1 separator)
+            alert("Please enter a complete 10-character classroom code.");
+            return;
+        }
+
+        // Retrieve CSRF token
+        const csrfTokenElement = document.querySelector('[name="csrfmiddlewaretoken"]');
+        if (!csrfTokenElement) {
+            alert("CSRF token not found. Please check your template.");
+            return;
+        }
+        const csrfToken = csrfTokenElement.value;
+
+        // Make API call to join classroom
+        fetch("/join_classroom/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken,
+            },
+            body: JSON.stringify({ classroom_code: code }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    alert(data.message || "Successfully joined the classroom.");
+                    window.location.reload(); // Refresh or redirect on success
+                } else {
+                    alert(data.message || "Failed to join the classroom.");
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                alert("An error occurred. Please try again later.");
+            });
+    }
+
+    // Attach the submit event listener
+    const form = document.getElementById("classroomForm");
+    if (form) {
+        form.addEventListener("submit", joinClassroom);
+    }
+});
+
+
+
+                // Attach event listeners to all input boxes
+                for (let i = 1; i <= totalBoxes; i++) {
+                    const box = document.getElementById(`box${i}`);
+                    if (box) {
+                        box.addEventListener('input', () => moveNext(i));
+                        box.addEventListener('keydown', (event) => handleKeyDown(event, i));
+                    }
+                }
+    
+                // Attach submit event listener to the form
+                const form = document.getElementById('classroomForm');
+                if (form) {
+                    form.addEventListener('submit', joinClassroom);
+                }
+            });
+        </script> -->
+    </div>
+    <div class="top-right">
+        <button class="btn profile-btn"><i class='bx bx-arrow-back'></i></button>
+        <button class="btn logout-btn" onclick="window.location.href='stdprofilePage'"><i
+                class='bx bx-user'></i></button>
+        <button class="btn logout-btn" onclick="window.location.href='notifications'"><i
+                class='bx bx-bell'></i></button>
+        <button class="btn back-btn"><i class='bx bxs-log-out'></i></button>
+    </div>
+    <div class="content-follow">
+        <div class="name-display-std">
+            <h2>Hello, {{username}}</h2>
+        </div>
+        <div class="notifications-bar">
+            <div class="notification-latest">
+                <span class="notification-icon">
+                    <i class='bx bx-bell' style="font-size: 28px;"></i>
+                </span>
+                {% if notifications|length > 0 %}
+                <div class="notification-details">
+                    <h4 class="notification-title">📢 New Viva Scheduled</h4>
+                    <p class="notification-meta">{{ notifications.0.notification }}</p>
+                    <div class="notification-footer">
+                        <!-- <span class="notification-timestamp">10 mins ago</span> -->
+                        <span class="notification-location">| Classroom: {{ notifications.0.classroom_code }}</span>
+                    </div>
+                </div>
+                {% else %}
+                <p>No notifications available</p>
+                {% endif %}
+            </div>
+        </div>
+        
+
+
+        <div class="ongoing-viva-block">
+            <div class="header">
+                <i class='bx bxs-video-recording viva-icon'></i>
+                <h2>Ongoing Viva</h2>
+            </div>
+        
+            {% if vivas %}
+                {% for viva in vivas %}
+                    <div class="card-ongoing">
+                        <div class="info">
+                            <h3 class="info-title">{{ viva.subjectName }} Viva</h3>
+                            <p class="info-subtitle"><strong>Topic:</strong> {{ viva.questionSource }}</p>
+                        </div>
+        
+                        <div class="details-card">
+                            <div class="detail-item">
+                                <i class='bx bx-calendar detail-icon'></i>
+                                <p><strong>Date:</strong> {{ viva.vivaDate }}</p>
+                            </div>
+                            <div class="detail-item">
+                                <i class='bx bx-time-five detail-icon'></i>
+                                <p><strong>Time:</strong> {{ viva.vivaTime }}</p>
+                            </div>
+                            <div class="detail-item">
+                                <i class='bx bx-timer detail-icon'></i>
+                                <p><strong>Duration:</strong> 2 hours</p>
+                            </div>
+                            <div class="detail-item">
+                                <i class='bx bx-question-mark detail-icon'></i>
+                                <p><strong>Questions:</strong> {{ viva.numQuestions }}</p>
+                            </div>
+                            <div class="detail-item">
+                                <i class='bx bx-bell detail-icon'></i>
+                                <p><strong>Deadline:</strong> {{ viva.vivaDate }}</p>
+                            </div>
+                        </div>
+        
+                        <div class="arrow-enter">
+                            <button 
+                                class="arrow-icon" 
+                                onclick="sendParameter('{{ viva.subjectName }}', '{{ viva.numQuestions }}')">
+                                &#10148;
+                            </button>
+
+                            
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No ongoing vivas.</p>
+            {% endif %}
+        </div>
+        
+        
+        
+        <div class="ongoing-viva-block">
+            <div class="header">
+                <i class='bx bxs-video-recording viva-icon'></i>
+                <h2>Classrooms</h2>
+            </div>
+            <div class="classroomHandler">
+
+
+                {% for i in classroom %}
+                <div class="box-claroom">
+                    <div class="classroom-name-holder" style="">
+                        <p>{{ i.classroom_name }}</p>
+                    </div>
+                    <div class="code-container" style="display: flex; justify-content: center; align-items: center; text-align: center; font-size: 18px; color: rgb(73, 1, 114); font-weight: 600;">
+                        {{ i.classroom_code }}
+                    </div>
+                </div>
+                {% endfor %}
+
+                <script>
+                    manageButton = document.getElementById('manage-button');
+                    manageButton.addEventListener('click', () => {
+                        document.querySelector('.window-blurer').style.display = 'flex';
+
+                    })
+                </script>
+                <div class="box-claroom adder" onclick="formJoinClass()">
+                    <p>Join Classroom</p>
+                </div>
+            </div>
+            <script>
+                function formJoinClass() {
+                    document.getElementById('window-bluer-join-class').style.display = 'block';
+                    document.getElementById('formJoinClassDisplay').style.display = 'flex';
+                }
+            </script>
+        </div>
+        <div class="upcoming-viva-block">
+            <div class="header">
+                <i class="bx bxs-calendar-check viva-icon"></i>
+                <h2>Upcoming Viva</h2>
+            </div>
+            <div class="card-slider-viva">
+                <!-- Each viva card -->
+                <div class="cards-of-viva">
+                    <div class="viva-info">
+                        <h3 class="viva-title">AI & ML Basics</h3>
+                        <p><strong>Classroom:</strong> C-201</p>
+                        <p><strong>Date:</strong> 28th September 2024</p>
+                        <p><strong>Time:</strong> 11:00 AM - 1:00 PM</p>
+                    </div>
+                    <div class="viva-overlay">
+                    </div>
+                    <button class="details-btn">See Details</button>
+
+                </div>
+
+                <!-- Repeat for additional cards -->
+            </div>
+        </div>
+        <div class="ongoing-viva-block" style="height: auto; padding-bottom: 150px;">
+            <div class="header">
+                <i class='bx bxs-video-recording viva-icon'></i>
+                <h2>Study Material</h2>
+            </div>
+            <div class="content-cards mediaManagerBlock" id="mediaManagerBlock" style="margin-top: 125px;">
+                <div class="fileDirectory">
+                    <div class="directoryName">
+                        <p>Classrooms</p>
+                    </div>
+                    <div id="createdLineFilesContainer">
+                        <div class="createdLineFile">
+                            <p>Database MS</p>
+                            <p><span style="font-weight: 600;">8</span></p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="filesHolder">
+                    <div class="directoryName">
+                        <p>Material</p>
+                    </div>
+                    <div class="search-bar" style="height: 55px; margin-top: 0; box-shadow: none;">
+                        <input type="text" id="searchQuestions" style="box-shadow: none;" placeholder=" Search
+                            questions..." oninput="searchQuestions()">
+                        <button type="button" onclick="clearSearch()">Clear</button>
+                    </div>
+                    <div class="mainFileContainer">
+                        <div class="box-div boxlitreture">
+                            <div class="header-litQb">
+                                <p>Literature</p>
+                            </div>
+                            <div class="FileContainerLitQb">
+                                <div class="fileBlock">
+                                    <div class="upperHeight">
+                                        <div class="downloadBtton">
+                                            <i class='bx bx-download btnShadows'></i>
+                                        </div>
+                                        <div class="infoButtonHolder">
+                                            <i class='bx bx-info-circle'></i>
+                                        </div>
+                                        <div class="deleteButtonFile">
+                                            <i class='bx bx-message-alt-x'></i>
+                                        </div>
+                                    </div>
+                                    <div class="fileLogoHolder">
+                                        <i class='bx bxs-file-pdf pdfLogo'></i>
+                                    </div>
+                                    <div class="fileNameConatiner">
+                                        <p>unit 1 DBMS.pdf</p>
+                                    </div>
+                                    <div class="fileSizeConatainer">
+                                        <p>13-nov-2024</p>
+                                    </div>
+                                    <div class="blurerFile">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="box-div boxQb">
+                            <div class="header-litQb">
+                                <p>Question Bank</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uploadFileButton" style="opacity: 0;">
+                        <p>Upload File <span style="font-size: 22px; color: rgb(45, 45, 45);"><i
+                                    class='bx bx-upload'></span></i></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
