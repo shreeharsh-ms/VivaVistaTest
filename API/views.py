@@ -1106,8 +1106,12 @@ from django.conf import settings
 from datetime import datetime, timedelta
 from django.utils.timezone import make_aware
 
+import pytz
+IST = pytz.timezone('Asia/Kolkata')
+
 
 def STDashboard(request):
+    
     from datetime import datetime, timedelta
     from django.utils.timezone import make_aware
     from django.http import JsonResponse
@@ -1159,7 +1163,7 @@ def STDashboard(request):
         )
 
         # Get the current time (timezone-aware)
-        current_time = make_aware(datetime.now())
+        current_time = datetime.now(IST)
 
         # Filter vivas to get only ongoing ones
         ongoing_vivas = []
