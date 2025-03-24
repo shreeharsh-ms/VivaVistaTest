@@ -1979,7 +1979,8 @@ def hosts_login(request):
         # Redirect back to login on failure
         return redirect('hosts_login')
 
-    return render(request, '/HOST_login.html')
+    return render(request, 'HOST_login.html')  # ✅ CORRECT
+
 
 
 def user_logout(request):
