@@ -808,7 +808,7 @@ def HOSTlogin(request):
         return render(request, 'STDconf.html', {'user_data': user_data})  # Pass data to the template
 
     # Render the current form page for non-POST requests
-    return render(request, 'HOSTlogin.html')
+    return render(request, 'hostlogin.html')
 
 from django.http import JsonResponse
 from django.shortcuts import render
