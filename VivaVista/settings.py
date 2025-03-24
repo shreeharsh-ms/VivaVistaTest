@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-3$)&vj)v)9zp&stzd+rkmtzjq$z0oj6g+e(n8^hrv(q*k!p&$#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+
 
 from pymongo import MongoClient
 
