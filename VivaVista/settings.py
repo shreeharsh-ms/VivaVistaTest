@@ -26,6 +26,10 @@ SECRET_KEY = 'django-insecure-3$)&vj)v)9zp&stzd+rkmtzjq$z0oj6g+e(n8^hrv(q*k!p&$#
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://ff1f-35-233-147-109.ngrok-free.app",  # Replace with your latest Ngrok URL
+    "https://*.ngrok-free.app"  # Allow all Ngrok subdomains
+]
 
 
 from pymongo import MongoClient
@@ -93,6 +97,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # For development
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # For production
+
+
 
 
 TEMPLATES = [
