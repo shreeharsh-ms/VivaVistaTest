@@ -1109,15 +1109,21 @@ from django.utils.timezone import make_aware
 import pytz
 IST = pytz.timezone('Asia/Kolkata')
 
-
 def STDashboard(request):
-    
     from datetime import datetime, timedelta
     from django.utils.timezone import make_aware
     from django.http import JsonResponse
     from django.shortcuts import render
     from django.conf import settings
-    print(f'ONGOING VIVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+    import pytz
+    import logging
+
+    logger = logging.getLogger(__name__)
+    
+    print("🔎 DEBUG: Entered STDashboard Function")
+    
+    # Define IST timezone
+    IST = pytz.timezone("Asia/Kolkata")
 
     # Access MongoDB collections
     classrooms_collection = settings.MONGO_DB['classrooms']
@@ -1129,9 +1135,12 @@ def STDashboard(request):
     username = request.session.get('name')
     host_name = request.session.get('user_name')
     user_id = request.session.get('user_id')
+
+    print(f"👤 DEBUG: User - {username}, ID - {user_id}")
     
     # Check if the user is logged in
     if not username or not user_id:
+        print("❌ DEBUG: User is not logged in.")
         return JsonResponse({
             "success": False,
             "message": "User is not logged in."
@@ -1147,45 +1156,61 @@ def STDashboard(request):
 
         # Extract classroom codes
         classroom_codes = [classroom["classroom_code"] for classroom in updated_classroom]
-        print("Classroom Codes:", classroom_codes)
+        print(f"🏫 DEBUG: Classroom Codes: {classroom_codes}")
 
         # Fetch notifications for all classrooms
         notifications_by_classroom = {}
         for code in classroom_codes:
             notifications = notifications_collection.find({"classroom_code": code})
             notifications_by_classroom[code] = list(notifications)
-        
+
         # Fetch scheduled vivas
         scheduled_vivas = list(
             viva_collection.find({
                 "classroom_code": {"$in": classroom_codes}
             })
         )
+        print(f"📅 DEBUG: Found {len(scheduled_vivas)} scheduled vivas")
 
-        # Get the current time (timezone-aware)
+        # Get the current time in IST
         current_time = datetime.now(IST)
-        print(f'cccccccccccccccccccccccccccccccccccccccccccccccccurent TIMEEEEEEEEEEEEEEEEEEEEE {current_time}')
+        print(f"🕒 DEBUG: Current IST Time: {current_time}")
 
         # Filter vivas to get only ongoing ones
         ongoing_vivas = []
         for viva in scheduled_vivas:
-            # Parse the viva date and time
-            viva_datetime_str = f"{viva['vivaDate']} {viva['vivaTime']}"
-            viva_datetime = datetime.strptime(viva_datetime_str, "%Y-%m-%d %H:%M")
-            viva_datetime = make_aware(viva_datetime)  # Make it timezone-aware
+            try:
+                # Parse the viva date and time
+                viva_datetime_str = f"{viva['vivaDate']} {viva['vivaTime']}"
+                print(f"📌 DEBUG: Processing Viva: {viva_datetime_str}")
 
-            # Check if the viva is ongoing
-            if viva_datetime <= current_time <= (viva_datetime + timedelta(hours=2)):  # Assuming 2-hour duration
-                ongoing_vivas.append(viva)
+                # Convert to datetime object (ASSUME ALL INPUTS ARE IN IST)
+                viva_datetime = datetime.strptime(viva_datetime_str, "%Y-%m-%d %H:%M")
+
+                # Strictly force IST timezone
+                viva_datetime = IST.localize(viva_datetime)
+
+                print(f"⏳ DEBUG: Viva Start (IST): {viva_datetime}, Current IST Time: {current_time}")
+
+                # Check if the viva is ongoing
+                if viva_datetime <= current_time <= (viva_datetime + timedelta(hours=2)):  # Assuming 2-hour duration
+                    print(f"✅ DEBUG: Viva is ongoing: {viva['subjectName']}")
+                    ongoing_vivas.append(viva)
+                else:
+                    print(f"🚫 DEBUG: Viva is NOT ongoing: {viva['subjectName']}")
+
+            except Exception as ve:
+                print(f"⚠️ DEBUG: Error processing viva datetime: {ve}")
 
         # Handle if there are no ongoing vivas
         if ongoing_vivas:
             first_viva = ongoing_vivas[0]
-            print(first_viva)
+            print(f"🎯 DEBUG: First Ongoing Viva - {first_viva}")
             request.session['ongoing_viva_subjectname'] = first_viva['subjectName']
             request.session['ongoing_viva_classroom_code'] = first_viva['classroom_code']
             request.session['ongoing_viva_total_no'] = first_viva['numQuestions']
         else:
+            print("🚨 DEBUG: No ongoing vivas found!")
             first_viva = None
 
         # Render the template with classroom and ongoing viva data
@@ -1195,12 +1220,11 @@ def STDashboard(request):
             "username": username,
             "notifications": notifications_by_classroom,
         })
-    
+
     except Exception as e:
         # Log the error
-        import logging
-        logger = logging.getLogger(__name__)
-        logger.error(f"Error in STDashboard: {str(e)}")
+        logger.error(f"🔥 ERROR in STDashboard: {str(e)}")
+        print(f"🔥 DEBUG: Exception Occurred: {str(e)}")
         
         # Return an error response
         return JsonResponse({
