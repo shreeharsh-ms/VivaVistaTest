@@ -30,6 +30,8 @@ ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = [
     "https://ff1f-35-233-147-109.ngrok-free.app",  # Replace with your latest Ngrok URL
     "https://*.ngrok-free.app"  # Allow all Ngrok subdomains
+    "https://relation-cleaner-fraser-subsidiary.trycloudflare.com",  # Your Cloudflare Tunnel URL
+    "https://*.trycloudflare.com",  # Allow all Cloudflare Tunnel subdomains
 ]
 
 
